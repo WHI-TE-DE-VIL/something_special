@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary!</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffb7c5, #ff66b2);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- THE ENTRY UNBLOCK CURTAIN LAYER --- */
+        .entry-curtain {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #ffb7c5, #ff66b2);
+            z-index: 100000; /* Sits completely on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.8s ease, pointer-events 0.8s ease;
+        }
+
+        .curtain-text {
+            font-family: 'Great Vibes', cursive;
+            color: #ffffff;
+            font-size: 2.0rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+            animation: pulse 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.04); opacity: 1; }
+        }
+
+        /* Fades out the curtain */
+        .entry-curtain.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* --- MAIN PAGE CONTENTS --- */
+        .heart-wrapper {
+            position: relative;
+            width: 460px;
+            height: 420px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .glass-heart-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            fill: rgba(255, 255, 255, 0.28);
+            stroke: rgba(255, 255, 255, 0.6);
+            stroke-width: 1.5px;
+            filter: drop-shadow(0 15px 35px rgba(186, 12, 99, 0.35)) url(#rough-texture);
+        }
+
+        .heart-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 45px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive !important;
+            color: #ffffff;
+            font-size: 3.4rem;
+            margin: 0 0 20px 0;
+            font-weight: 400;
+            line-height: 1.2;
+            width: 85%;
+            text-shadow: 2px 2px 8px rgba(160, 8, 80, 0.4);
+        }
+
+        .celebrate-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 32px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative !important;
+            z-index: 9999 !important;
+        }
+
+        .celebrate-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.4);
+        }
+
+        /* --- FALLING PETALS --- */
+        .petal {
+            position: absolute;
+            top: -30px;
+            pointer-events: none;
+            animation: fall linear infinite;
+            transform-style: preserve-3d;
+        }
+
+        .petal-inner {
+            width: 100%; height: 100%;
+            border-radius: 50% 12% 50% 50%;
+            transform: rotateX(25deg);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0); opacity: 0; }
+            5% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { transform: translateY(105vh) rotateX(540deg) rotateY(360deg) rotateZ(720deg) translateX(120px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THE MUSIC UNBLOCK OVERLAY TRAY (Bypasses Browser Restrictions) -->
+    <div class="entry-curtain" id="musicUnblocker" onclick="initializeWebsiteJourney()">
+        <div class="curtain-text">
+            ⚠️Disclaimer⚠️<br>
+            Don't go ahead if you are not my girlfriend! Only for the one who have my heart.❤️<br>
+            Click anywhere to continue!
+        </div>
+    </div>
+
+    <!-- Hidden Background Audio loop -->
+    <audio id="bgAudioLoop" loop preload="auto">
+        <source src="{% get_static_prefix %}images/song_home.mp3" type="audio/mpeg">
+    </audio>
+
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="rough-texture">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+                <feGaussianBlur in="displaced" stdDeviation="12" />
+                <feMerge>
+                    <feMergeNode />
+                    <feMergeNode in="SourceGraphic" opacity="0.35" />
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="heart-wrapper">
+        <svg class="glass-heart-bg" viewBox="0 0 100 91.5" preserveAspectRatio="none">
+            <path d="M 50,91.5 C 50,91.5 0,55 0,27.5 C 0,7 18.5,-5 36.5,4 C 44,7.8 50,15.5 50,15.5 C 50,15.5 56,7.8 63.5,4 C 81.5,-5 100,7 100,27.5 C 100,55 50,91.5 50,91.5 Z" />
+        </svg>
+
+        <div class="heart-content">
+            <h1>Happy Anniversary<br>My Love</h1>
+            <button class="celebrate-btn" onclick="nextPage()">Click me</button>
+        </div>
+    </div>
+
+    <script>
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const inner = document.createElement('div');
+            inner.classList.add('petal-inner');
+            petal.appendChild(inner);
+
+            petal.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 14 + 12;
+            petal.style.width = size + 'px';
+            petal.style.height = (size * 1.15) + 'px';
+            petal.style.animationDuration = Math.random() * 4 + 5 + 's';
+            petal.style.delay = Math.random() * 2 + 's';
+
+            const redTones = [
+                'radial-gradient(circle at 50% 30%, #ff5e7e 0%, #b3002d 100%)',
+                'radial-gradient(circle at 50% 30%, #ff416c 0%, #8a0022 100%)',
+                'radial-gradient(circle at 50% 30%, #ff7597 0%, #9e0031 100%)'
+            ];
+            inner.style.background = redTones[Math.floor(Math.random() * redTones.length)];
+            document.body.appendChild(petal);
+            setTimeout(() => { petal.remove(); }, 9000);
+        }
+        setInterval(createPetal, 250);
+
+        // --- FIRES INSTANTLY WHEN SHE TAPS ANYWHERE ---
+        function initializeWebsiteJourney() {
+            const audio = document.getElementById('bgAudioLoop');
+            if (audio) {
+                audio.play().catch(e => console.log("Audio trigger failed:", e));
+            }
+            // Fades out the entry window smoothly
+            document.getElementById('musicUnblocker').classList.add('fade-out');
+        }
+
+        /* REPLACE THE NEXTPAGE FUNCTION AT THE BOTTOM OF YOUR HOME_PAGE.HTML */
+        function nextPage() {
+            const audio = document.getElementById('bgAudioLoop');
+            if (audio) {
+                // Capture the absolute current timestamp
+                localStorage.setItem('musicCurrentTime', audio.currentTime);
+                localStorage.setItem('musicPlayingState', 'true');
+            }
+            window.location.href = "/memories/";
+        }
+
+    </script>
+</body>
+</html>

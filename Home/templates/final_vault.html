@@ -1,0 +1,454 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Forever Vault</title>
+    <!-- Calligraphy script font family imports -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffb7c5, #ff66b2);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            padding: 40px 0;
+            box-sizing: border-box;
+        }
+
+        /* Core Presentation Glass Card Container */
+        .vault-container {
+            width: 90%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 20px 45px rgba(218, 24, 132, 0.25);
+            text-align: center;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive !important;
+            color: #ffffff;
+            font-size: calc(2.2rem + 1.5vw);
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+            text-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- RELATIONSHIP TIME COUNTER TICKER --- */
+        .counter-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .counter-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 5px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .counter-val {
+            font-size: calc(1.3rem + 1vw);
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .counter-lbl {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* --- SECURE BLURRED PASSWORD PROMPT MODAL OVERLAYS --- */
+        .pass-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .pass-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .pass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 30px 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 85%;
+            max-width: 380px;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pass-modal.active .pass-card { transform: scale(1); }
+
+        .pass-card h2 {
+            font-family: 'Great Vibes', cursive;
+            color: #ffffff;
+            font-size: 2.6rem;
+            margin: 0 0 20px 0;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .pass-input::placeholder { color: rgba(255,255,255,0.7); }
+
+        .pass-btn {
+            background: #ffffff;
+            color: #ff66b2;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .pass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,255,255,0.4);
+        }
+
+        .error-msg {
+            color: #ff3333;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+            font-weight: 600;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+        /* --- THE DYNAMIC SECRET SCROLL CONTAINER --- */
+        .scroll-wrapper {
+            position: relative;
+            perspective: 1500px; /* Enhanced depth for 3D flip */
+            margin: 40px auto 20px auto;
+            max-width: 520px;
+            cursor: pointer;
+        }
+
+        .letter-paper {
+            background: #fbf7ed;
+            background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 100% 2em; /* Subtle vintage writing lines */
+            border-radius: 4px;
+            padding: 40px;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+
+            /* INITIAL BLOCKED CARD STATE: Flipped upside down backwards */
+            transform: rotateY(180deg);
+            transform-style: preserve-3d;
+            transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+        }
+
+        /* REALISTIC CLOSED SCROLL PARCHMENT LAYER */
+        .letter-paper-locked-back {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Realistic aged vintage parchment color tones */
+            background: linear-gradient(90deg, #dbcfb4 0%, #f4ecd8 8%, #fff9eb 50%, #f4ecd8 92%, #dbcfb4 100%);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backface-visibility: hidden;
+            transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* Rolled-up paper cylinder margins on edges for a realistic 3D appearance */
+        .letter-paper-locked-back::before,
+        .letter-paper-locked-back::after {
+            content: "";
+            position: absolute;
+            top: 0; width: 16px; height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.15), rgba(0,0,0,0));
+        }
+        .letter-paper-locked-back::before { left: 0; }
+        .letter-paper-locked-back::after { right: 0; transform: scaleX(-1); }
+
+        /* Scroll Text Instruction Prompt */
+        .scroll-prompt-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.4rem;
+            color: #5c4a3c;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            z-index: 3;
+        }
+
+        /* --- THE DECORATIVE EMBEDDED LOCK THREAD --- */
+        .lock-thread {
+            position: absolute;
+            top: 50%;
+            left: -3%;
+            width: 106%;
+            height: 4px;
+            /* Crimson braided thread gradient texture */
+            background: repeating-linear-gradient(45deg, #b30000, #b30000 4px, #ff3333 4px, #ff3333 8px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            z-index: 5;
+            pointer-events: none;
+            transition: transform 0.7s ease, opacity 0.4s ease;
+            transform: translateY(-50%);
+        }
+
+        /* AUTHENTIC WAX SEAL MEDALLION */
+        .wax-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle, #ff3333 0%, #990000 80%, #660000 100%);
+            border-radius: 50%;
+            border: 3px solid #b30000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.35), inset 0 0 10px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: #f4ecd8;
+            z-index: 6;
+            text-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        /* SECURE UNLOCKED ACTIVE TRANSFORMATION STATES */
+        .scroll-wrapper.unlocked .letter-paper {
+            transform: rotateY(0deg);
+        }
+        .scroll-wrapper.unlocked .letter-paper-locked-back {
+            transform: rotateY(-180deg);
+        }
+        .scroll-wrapper.unlocked .lock-thread {
+            transform: translateY(-50%) scaleX(0);
+            opacity: 0;
+        }
+        .scroll-wrapper.unlocked .wax-seal {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+
+        .letter-text {
+            font-family: 'Poppins', sans-serif;
+            color: #444444;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin: 0;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgAudioLoop" loop autoplay>
+        <source src="{% get_static_prefix %}images/song_final.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Target Pinned Secure Password Prompt Panel -->
+    <div class="pass-modal" id="passwordModal">
+        <div class="pass-card">
+            <h2>Secret Code...</h2>
+            <input type="password" class="pass-input" id="secretKeyField" placeholder="Enter our special code">
+            <button class="pass-btn" onclick="verifySecretKey()">Unlock</button>
+            <div class="error-msg" id="errorMessage">Wrong code, are you the owner of this letter?</div>
+        </div>
+    </div>
+
+    <!-- Main Active Vault Content Wrapper -->
+    <div class="vault-container">
+        <h1>To Infinity & Beyond</h1>
+        <div class="subtitle">Our Love Counter</div>
+
+        <!-- INFINITE RELATIONSHIP COUNTER TICKER -->
+        <div class="counter-box">
+            <div class="counter-item"><div class="counter-val" id="daysVal">00</div><div class="counter-lbl">Days</div></div>
+            <div class="counter-item"><div class="counter-val" id="hoursVal">00</div><div class="counter-lbl">Hours</div></div>
+            <div class="counter-item"><div class="counter-val" id="minsVal">00</div><div class="counter-lbl">Mins</div></div>
+            <div class="counter-item"><div class="counter-val" id="secsVal">00</div><div class="counter-lbl">Secs</div></div>
+        </div>
+
+        <!-- THE LOCKED INTERACTIVE SCROLL MODULE BLOCK -->
+        <div class="scroll-wrapper" id="scrollWrapper" onclick="openGatePrompt()">
+            <!-- Sealed horizontal string layout overlay -->
+            <div class="lock-thread"></div>
+
+            <!-- Golden Wax Seal Medallion Stamp centered on thread -->
+            <div class="wax-seal">❤️</div>
+
+            <!-- Masking parchment layer presented on load -->
+            <div class="letter-paper-locked-back">
+                <div class="scroll-prompt-text">Tap to open my letter... 🔐</div>
+            </div>
+
+            <!-- Authentic reverse-flipped structural paper card block -->
+            <div class="letter-paper">
+                <p class="letter-text">
+                    Mo Ruby,<br><br>
+                    Aji amaku gote year complete heigala. Jana padilani ki ete jaldi kemiti ye pura heigala.
+                    Emiti laguchi jemiti ki ebe hi kichi dina agaru ame ye relationship re asichu.
+                    Ye sbu dina re ame sangre bahut kichi kalu hasila, kandilu, gossip kalu, bore helu,
+                    ek dusra upare frustrated helu, ragilu, au bahut kichi kalu, but sbu thu bada jinisa ame ek dusra ku heal kalu,
+                    ama past wounds thu. Au eita hi ta thaye na bhala paiba. Aji ka time re jebe gote stree taa swamy ku maridauchi, au stree
+                    ta swamy ku maari dauchi seithi mu to bhali gote ete sundar, cute, pyaari, polite, caring, au pagala jhia te ku paiki bahut khush achi.
+                    Tu khali mo girlfriend nuha, balki mo friend, best friend, girlfriend, wife, mother, care taker, doctor, diet controler ahuri jana nahi kete kana achu.
+                    Matra etiki dina re mu to saha bahut attach hei sarichi au emiti hi rahibaku b chanhuchi pura life. Please kebe mote chhadibuni and emiti hi sbu bele mo pakhre thibu.<br><br>
+                    I love bubu
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. THE INFINITY RELATIONSHIP COUNTER CLOCK ---
+        // Format: Year, Month Index (0 = Jan, 7 = Aug), Day, Hour (24h format), Minutes
+        const anniversaryStartDate = new Date(2025, 7, 6, 0, 0, 0);
+
+        function updateLoveCounter() {
+            const now = new Date();
+            const differenceInMs = now - anniversaryStartDate;
+
+            const seconds = Math.floor(differenceInMs / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            const displayHours = hours % 24;
+            const displayMinutes = minutes % 60;
+            const displaySeconds = seconds % 60;
+
+            document.getElementById('daysVal').innerText = String(days).padStart(2, '0');
+            document.getElementById('hoursVal').innerText = String(displayHours).padStart(2, '0');
+            document.getElementById('minsVal').innerText = String(displayMinutes).padStart(2, '0');
+            document.getElementById('secsVal').innerText = String(displaySeconds).padStart(2, '0');
+        }
+
+        updateLoveCounter();
+        setInterval(updateLoveCounter, 1000);
+
+
+        // --- 2. SECRET SCROLL AND PASSWORD LOCK ENGINES ---
+        const modal = document.getElementById('passwordModal');
+        const scrollWrapper = document.getElementById('scrollWrapper');
+        const errorMsg = document.getElementById('errorMessage');
+        const inputField = document.getElementById('secretKeyField');
+        let isLetterUnlocked = false;
+
+        // Opens the frosted glass password gate when she taps the scroll
+        function openGatePrompt() {
+            if (isLetterUnlocked) return; // Do nothing if already opened
+            modal.classList.add('active');
+            inputField.focus();
+        }
+
+        // Closes the window if she clicks outside the pass-card box
+        modal.onclick = function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                errorMsg.style.display = 'none';
+            }
+        }
+
+        // Verifies the secret passcode input
+        function verifySecretKey() {
+            const userPassword = inputField.value;
+
+            // TARGET CODE PASSWORD DETECTION: '0608' (August 6th)
+            // Feel free to change '0608' to whatever secret key you prefer!
+            if (userPassword === "Ghusuri") {
+                isLetterUnlocked = true;
+                modal.classList.remove('active'); // Close modal
+
+                // Triggers the CSS rules to snap the string and flip the scroll open!
+                scrollWrapper.classList.add('unlocked');
+            } else {
+                // Flash the error text if code is wrong
+                errorMsg.style.display = 'block';
+                inputField.value = ""; // Reset field
+                inputField.focus();
+            }
+        }
+
+        // Allows hitting the 'Enter' key on the keyboard to trigger unlock instantly
+        inputField.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verifySecretKey();
+            }
+        });
+        /* ADD THIS TO THE BOTTOM SCRIPT OF YOUR FINAL_VAULT.HTML */
+        window.addEventListener('load', () => {
+            const audio = document.getElementById('bgAudioLoop');
+            const savedTime = localStorage.getItem('musicCurrentTime');
+
+            if (audio && savedTime) {
+                audio.currentTime = parseFloat(savedTime);
+                audio.play().catch(e => console.log(e));
+            }
+        });
+
+    </script>
+</body>
+</html>

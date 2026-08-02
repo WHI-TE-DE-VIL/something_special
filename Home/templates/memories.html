@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Year Together</title>
+    <!-- CRITICAL: Google Fonts CDN framework links to enable calligraphy cursive script -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <!-- Replace your old font link at the top of memories.html with this line -->
+    <link href="https://googleapis.com{{ v }}" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffb7c5, #ff66b2);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* LOCKED TEXT LAYER: Stays fixed in the center of the screen view */
+        .locked-center-wrapper {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 680px;
+            z-index: 100;
+            text-align: center;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .matte-text-card {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(218, 24, 132, 0.25),
+                        inset 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Calligraphy font rules matching the landing page */
+        .glowing-text {
+            font-family: 'Great Vibes', cursive !important; /* Force homepage script */
+            font-style: normal !important;
+            font-weight: 400 !important;
+            color: #ffffff;
+            font-size: calc(1.7rem + 0.6vw);
+            line-height: 1.2;
+            margin: 0 0 25px 0;
+            text-align: center;
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.85),
+                0 0 25px rgba(255, 20, 147, 0.9),
+                0 0 50px rgba(255, 20, 147, 0.5);
+            animation: pulse-glow 2.5s ease-in-out infinite alternate;
+        }
+
+
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 25px rgba(255,20,147,0.6); }
+            to { text-shadow: 0 0 15px rgba(255,255,255,0.95), 0 0 35px rgba(255,20,147,1); }
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.4);
+        }
+
+        /* MASONRY FLOW COLUMN SYSTEM: Prevents all container aspect-ratio gaps and white padding */
+        .scrappy-column-wrapper {
+            column-count: 4;
+            column-gap: 25px;
+            padding: 40px;
+            max-width: 1500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Dynamic viewport scale media queries */
+        @media (max-width: 1100px) { .scrappy-column-wrapper { column-count: 3; } }
+        @media (max-width: 768px) {
+            .scrappy-column-wrapper { column-count: 2; padding: 15px; column-gap: 15px; }
+            .matte-text-card { padding: 20px; }
+        }
+        @media (max-width: 480px) { .scrappy-column-wrapper { column-count: 1; } }
+
+        /* Polaroid Photo Card styling */
+        .grid-photo-card {
+            background: white;
+            padding: 8px 8px 20px 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            break-inside: avoid; /* Prevents images from snapping in half between columns */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+        }
+
+        .grid-photo-card.popped {
+            opacity: 1;
+            transform: scale(1) rotate(var(--card-rot));
+        }
+
+        .grid-photo-card img {
+            width: 100%;
+            height: auto; /* Fits the photo shape exactly so white spaces vanish */
+            display: block;
+            border-radius: 2px;
+        }
+
+        .grid-photo-card:hover {
+            transform: scale(1.06) rotate(0deg) !important;
+            z-index: 50;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Lightbox frame viewer background overlay */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .frame-container {
+            background: #ffffff;
+            padding: 16px 16px 30px 16px;
+            border-radius: 4px;
+            max-width: 420px;
+            width: 85%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .lightbox.active .frame-container { transform: scale(1); }
+
+        .frame-container img {
+            width: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            border-radius: 2px;
+        }
+
+        .frame-caption {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: #333333;
+            margin-top: 15px;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgAudioLoop" loop autoplay>
+        <source src="{% get_static_prefix %}images/song_memories.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Locked Card Layer (Pinned to the screen viewport center) -->
+    <div class="locked-center-wrapper">
+        <div class="matte-text-card">
+            <div class="glowing-text">
+                Thank you for making my year fruitful.❤️ Thank you for you support, care, love, patience and everything you gave me in this year.❤️
+            </div>
+            <button class="action-btn" onclick="nextPage()">Our Next Chapter</button>
+        </div>
+    </div>
+
+    <!-- Background Scrapbook Column Container -->
+    <div class="scrappy-column-wrapper" id="photoGrid"></div>
+
+    <!-- Polaroid Lightbox Frame Overlay Popup Module -->
+    <div class="lightbox" id="photoLightbox" onclick="closeLightbox()">
+        <div class="frame-container" onclick="event.stopPropagation()">
+            <img id="lightboxImg" src="" alt="Memory Asset">
+            <div class="frame-caption" id="lightboxText">Our Story</div>
+        </div>
+    </div>
+    <script>
+        const captions = [
+            "The day you made me the happiest person alive... ❤️",
+            "Your beautiful smile lights up my whole world. ✨",
+            "Thank you for staying by my side through everything. 💖",
+            "My favorite place in the world is right next to you. 🌧️",
+            "Every single laugh we share is a memory I treasure. 😂",
+            "Supporting each other through thick and thin this year. 🥂",
+            "Holding your hand makes all my worries disappear. 🌸",
+            "I fall in love with you a little bit more every day. 🌹"
+        ];
+
+        const totalPhotos = 50;
+        const gridContainer = document.getElementById('photoGrid');
+        const elementsArray = [];
+
+        // 1. Generate structural elements for all 50 uncropped photos
+        for (let i = 1; i <= totalPhotos; i++) {
+            const card = document.createElement('div');
+            card.classList.add('grid-photo-card');
+
+            // Assign organic rotational lean angles (between -6deg and +6deg)
+            const rot = (Math.random() * 12) - 6;
+            card.style.setProperty('--card-rot', rot + 'deg');
+
+            const img = document.createElement('img');
+            img.src = `{% get_static_prefix %}images/photo (${i}).jpg`;
+            card.appendChild(img);
+
+            const textStr = captions[Math.floor(Math.random() * captions.length)];
+            card.onclick = () => openLightbox(img.src, textStr);
+
+            elementsArray.push(card);
+        }
+
+        // 2. Shuffle array to achieve a completely random pop sequence order
+        elementsArray.sort(() => Math.random() - 0.5);
+
+        // 3. Inject photos dynamically into the masonry column structure layout
+        elementsArray.forEach((photoCard) => {
+            gridContainer.appendChild(photoCard);
+        });
+
+        // 4. Staggered Pop Transitions Sequencer execution loop
+        let popIndex = 0;
+        function triggerNextPop() {
+            if (popIndex >= elementsArray.length) return;
+            elementsArray[popIndex].classList.add('popped');
+            popIndex++;
+            setTimeout(triggerNextPop, 120);
+        }
+
+        // 5. UNIFIED INITIALIZATION ENGINE: Handles grid layout and audio state persistence
+                // REPLACE ONLY THE WINDOW.ONLOAD BLOCK IN PART 2 OF MEMORIES.HTML
+        window.onload = () => {
+            // 1. Kickstart grid photo pop-ins
+            setTimeout(triggerNextPop, 400);
+
+            const audio = document.getElementById('bgAudioLoop');
+
+            // 2. UNBLOCK HOOK: The second she touches the screen, the song jumps forward instantly
+            document.body.addEventListener('click', function() {
+                const savedTime = localStorage.getItem('musicCurrentTime');
+                const wasPlaying = localStorage.getItem('musicPlayingState');
+
+                if (audio && savedTime && wasPlaying === 'true') {
+                    // Instantly sync the song to the exact saved millisecond
+                    audio.currentTime = parseFloat(savedTime);
+                    audio.play().catch(e => console.log("Audio sync failed:", e));
+                }
+            }, { once: true }); // Runs only on the absolute first touch on this page
+
+            // 3. Keep updating the timestamp in storage as the song plays out
+            setInterval(() => {
+                if (audio && !audio.paused) {
+                    localStorage.setItem('musicCurrentTime', audio.currentTime);
+                }
+            }, 500);
+        };
+
+        // 6. Lightbox Modal open/close controllers
+        function openLightbox(url, text) {
+            document.getElementById('lightboxImg').src = url;
+            document.getElementById('lightboxText').innerText = text;
+            document.getElementById('photoLightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('photoLightbox').classList.remove('active');
+        }
+
+        // 7. FIXED REDIRECT HEADER BUTTON FUNCTION
+        function nextPage() {
+            const audio = document.getElementById('bgAudioLoop');
+            if (audio) {
+                // Save time position right before migrating pages
+                localStorage.setItem('musicCurrentTime', audio.currentTime);
+            }
+            window.location.href = "/do-you-love-me/";
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>
