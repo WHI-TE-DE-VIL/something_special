@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Year Together</title>
+    <title>Our Memory Jar</title>
     <!-- Google Fonts Links -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
@@ -14,178 +14,168 @@
             margin: 0; padding: 0; min-height: 100vh;
             background: linear-gradient(135deg, #ffb7c5, #ff66b2);
             font-family: 'Poppins', sans-serif;
-            overflow-x: hidden; overflow-y: auto; position: relative;
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .locked-center-wrapper {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 680px; z-index: 100; text-align: center; pointer-events: none;
-        }
-        .matte-text-card {
-            pointer-events: auto; background: rgba(255, 255, 255, 0.16);
+
+        /* CARD HEADER INTERFACE */
+        .intro-text-card {
+            background: rgba(255, 255, 255, 0.16);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.35); padding: 35px;
+            border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 25px; max-width: 550px; width: 85%; text-align: center;
             box-shadow: 0 15px 35px rgba(218, 24, 132, 0.25);
+            margin-bottom: 20px; z-index: 10;
         }
+
         .glowing-text {
             font-family: 'Great Vibes', cursive !important; color: #ffffff;
-            font-size: calc(1.7rem + 0.6vw); line-height: 1.2; margin: 0 0 25px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.85), 0 0 25px rgba(255, 20, 147, 0.9);
-            animation: pulse-glow 2.5s ease-in-out infinite alternate;
+            font-size: 2.5rem; line-height: 1.2; margin: 0 0 10px 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.85);
         }
-        @keyframes pulse-glow {
-            from { text-shadow: 0 0 10px rgba(255,255,255,0.8); }
-            to { text-shadow: 0 0 15px rgba(255,255,255,0.95); }
-        }
+
         .action-btn {
             background: rgba(255, 255, 255, 0.25); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 10px 32px; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 10px 32px; font-size: 0.95rem; font-weight: 600; border-radius: 50px; cursor: pointer;
+            transition: all 0.3s ease; margin-top: 10px;
         }
         .action-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
-        .scrappy-column-wrapper {
-            column-count: 4; column-gap: 25px; padding: 40px; max-width: 1500px; margin: 0 auto; z-index: 10;
+
+        /* THE CHIC INTERACTIVE MASON JAR Container */
+        .jar-container {
+            position: relative; width: 200px; height: 280px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            border-radius: 30px 30px 60px 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset 0 0 20px rgba(255,255,255,0.4);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s ease; z-index: 5;
         }
-        @media (max-width: 1100px) { .scrappy-column-wrapper { column-count: 3; } }
-        @media (max-width: 768px) { .scrappy-column-wrapper { column-count: 2; padding: 15px; } }
-        @media (max-width: 480px) { .scrappy-column-wrapper { column-count: 1; } }
-        .grid-photo-card {
-            background: white; padding: 8px 8px 20px 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            cursor: pointer; border-radius: 4px; margin-bottom: 25px; break-inside: avoid;
-            transition: transform 0.4s ease, box-shadow 0.3s ease; opacity: 0; transform: scale(0);
+
+        .jar-container:hover {
+            transform: scale(1.05) rotate(1deg);
         }
-        .grid-photo-card.popped { opacity: 1; transform: scale(1) rotate(var(--card-rot)); }
-        .grid-photo-card img { width: 100%; height: auto; display: block; border-radius: 2px; }
+
+        /* Jar Neck and Lid details using pure CSS elements */
+        .jar-container::before {
+            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 15px; background: rgba(255, 255, 255, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.6); border-radius: 10px 10px 0 0;
+        }
+
+        .jar-label {
+            font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #ffffff;
+            text-align: center; pointer-events: none; user-select: none;
+            text-shadow: 0 2px 10px rgba(218, 24, 132, 0.3);
+        }
+
+        /* FLOATING HEARTS INSIDE THE JAR CONTAINER */
+        .mini-heart {
+            position: absolute; font-size: 20px; opacity: 0.75;
+            animation: drift 3s ease-in-out infinite alternate; pointer-events: none;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-15px) translateX(10px); }
+        }
+
+        /* EXPANDABLE LIGHTBOX MODAL DIALOG */
         .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center;
             z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .frame-container {
-            background: #ffffff; padding: 16px 16px 30px 16px; border-radius: 4px;
-            max-width: 420px; width: 85%; text-align: center;
+
+        .parchment-card {
+            background: #fffdf9; color: #333333; padding: 35px; border-radius: 20px;
+            max-width: 420px; width: 85%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 2px solid #ff66b2; transform: scale(0.8) rotate(-3deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .frame-container img { width: 100%; max-height: 65vh; object-fit: contain; }
-        .frame-caption { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #333333; margin-top: 15px; }
+        .lightbox.active .parchment-card { transform: scale(1) rotate(0deg); }
+
+        .note-badge { font-size: 3.5rem; margin-bottom: 10px; }
+        .note-title { font-family: 'Great Vibes', cursive; font-size: 2.6rem; color: #da1884; margin-bottom: 15px; }
+        .note-body { font-size: 1.05rem; line-height: 1.5; color: #555555; font-family: 'Poppins', sans-serif; }
+        .close-hint { font-size: 0.8rem; color: #999999; margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
-    <!-- CLOUD MP3 LINK -->
-    <audio id="bgAudioLoop" loop autoplay>
-        <source src="https://mixkit.co" type="audio/mpeg">
-    </audio>
 
-    <div class="locked-center-wrapper">
-        <div class="matte-text-card">
-            <div class="glowing-text">
-                Thank you for making my year fruitful.❤️ Thank you for your support, care, love, patience and everything you gave me in this year.❤️
-            </div>
-            <button class="action-btn" onclick="nextPage()">Our Next Chapter</button>
-        </div>
+    <div class="intro-text-card">
+        <div class="glowing-text">Our Memory Jar</div>
+        <p style="color: white; margin: 0; opacity: 0.95; font-size: 0.95rem; line-height: 1.4;">
+            Thank you for making my year fruitful.❤️ Thank you for your support, care, love, patience and everything you gave me in this year.❤️
+        </p>
+        <p style="color: #ffe4e1; font-weight: 600; margin: 8px 0 0 0; font-size: 0.9rem;">
+            ✨ Click on the glass jar to pull out a memory scroll! ✨
+        </p>
+        <button class="action-btn" onclick="nextPage()">Our Next Chapter</button>
     </div>
 
-    <div class="scrappy-column-wrapper" id="photoGrid"></div>
+    <!-- THE INTERACTIVE CSS MASON JAR -->
+    <div class="jar-container" id="loveJar" onclick="pullMemory()">
+        <div class="jar-label">Reasons<br>I Love<br>You</div>
 
-    <div class="lightbox" id="photoLightbox" onclick="closeLightbox()">
-        <div class="frame-container" onclick="event.stopPropagation()">
-            <img id="lightboxImg" src="" alt="Memory Asset">
-            <div class="frame-caption" id="lightboxText">Our Story</div>
+        <!-- Ambient decorative background hearts inside jar -->
+        <div class="mini-heart" style="top: 40px; left: 30px; animation-delay: 0s;">❤️</div>
+        <div class="mini-heart" style="top: 80px; right: 40px; animation-delay: 0.5s;">💖</div>
+        <div class="mini-heart" style="bottom: 50px; left: 50px; animation-delay: 1.2s;">❤️</div>
+        <div class="mini-heart" style="bottom: 70px; right: 35px; animation-delay: 0.8s;">💕</div>
+    </div>
+
+    <!-- MEMORY EXPANSION LIGHTBOX LAYOUT -->
+    <div class="lightbox" id="noteLightbox" onclick="closeLightbox()">
+        <div class="parchment-card" onclick="event.stopPropagation()">
+            <div class="note-badge" id="popupBadge">💝</div>
+            <div class="note-title" id="popupTitle">Memory #1</div>
+            <div class="note-body" id="popupBody">Message contents appear here dynamically.</div>
+            <div class="close-hint">— Tap outside to slide note back inside jar —</div>
         </div>
     </div>
 
     <script>
-        // BULLETPROOF CDN ARRAY GENERATED DIRECTLY FROM YOUR POSTIMAGES GALLERY
-        const imageUrls = [
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc",
-            "https://postimg.cc"
+        // EXPANDABLE 50-SLOT EXTENSIBLE ROMANTIC STORAGE DATABASE
+        const memoryJarDatabase = [
+            { id: 1, badge: "❤️", title: "The Beginning", body: "The day you made me the happiest person alive. My complete life trajectory shifted into a brighter space the second you chose to hold my hand." },
+            { id: 2, badge: "✨", title: "Your Radiance", body: "Your beautiful smile lights up my whole world. It completely melts away even my absolute heaviest and most stressful days." },
+            { id: 3, badge: "🌧️", title: "My Safe Haven", body: "My favorite place in the entire world is standing right next to you, completely sheltered through any storm life throws at us." },
+            { id: 4, badge: "😂", title: "Our Laughs", body: "Every single laugh we share is a golden memory I treasure. Thank you for making my life endlessly fun and keeping me smiling." },
+            { id: 5, badge: "💪", title: "Unwavering Support", body: "Thank you for staying firmly by my side and supporting each other with endless care and patience through every single high and low this year." },
+            { id: 6, badge: "☕", title: "The Small Talks", body: "I love the cozy, random late-night conversations that make absolutely no sense but mean the entire universe to me." },
+            { id: 7, badge: "🌸", title: "Your Kindness", body: "The quiet, beautiful way you care for me when I am tired. Your soft heart is my absolute favorite asset in this world." }
         ];
 
-        const primaryCaptions = [
-            "The day you made me the happiest person alive... ❤️",
-            "Your beautiful smile lights up my whole world. ✨",
-            "Thank you for staying by my side through everything. 💖",
-            "My favorite place in the world is right next to you. 🌧️",
-            "Every single laugh we share is a memory I treasure. 😂",
-            "Supporting each other through every challenge. 💪"
-        ];
+        let historyTrack = [];
 
-        const photoGrid = document.getElementById('photoGrid');
+        function pullMemory() {
+            // If all elements have been displayed once, reset tracking track loop cleanly
+            if (historyTrack.length === memoryJarDatabase.length) {
+                historyTrack = [];
+            }
 
-        imageUrls.forEach((url, index) => {
-            const card = document.createElement('div');
-            card.className = 'grid-photo-card';
+            // Select elements randomly ensuring no immediate side-by-side duplicates
+            let selectedIndex;
+            do {
+                selectedIndex = Math.floor(Math.random() * memoryJarDatabase.length);
+            } while (historyTrack.includes(selectedIndex));
 
-            const randomRotation = (Math.random() * 12 - 6).toFixed(2);
-            card.style.setProperty('--card-rot', randomRotation + 'deg');
+            historyTrack.push(selectedIndex);
+            const memory = memoryJarDatabase[selectedIndex];
 
-            const captionText = primaryCaptions[index] || `Another beautiful moment with you... ✨ (Memory #${index + 1})`;
+            // Assign variables to lightbox dialog
+            document.getElementById('popupBadge').textContent = memory.badge;
+            document.getElementById('popupTitle').textContent = memory.title;
+            document.getElementById('popupBody').textContent = memory.body;
 
-            card.innerHTML = `<img src="${url}" alt="Memory">`;
-            card.onclick = function() { openLightbox(url, captionText); };
-
-            photoGrid.appendChild(card);
-
-            setTimeout(function() {
-                card.classList.add('popped');
-            }, index * 60);
-        });
-
-        function openLightbox(imgSrc, captionText) {
-            document.getElementById('lightboxImg').src = imgSrc;
-            document.getElementById('lightboxText').textContent = captionText;
-            document.getElementById('photoLightbox').classList.add('active');
+            // Pop open the animation frame
+            document.getElementById('noteLightbox').classList.add('active');
         }
 
         function closeLightbox() {
-            document.getElementById('photoLightbox').classList.remove('active');
+            document.getElementById('noteLightbox').classList.remove('active');
         }
 
         function nextPage() {
