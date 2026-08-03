@@ -6,7 +6,6 @@ def home(request):
 # MAKE SURE THIS NEW VIEW IS EXACTLY HERE
 def love_query(request):
     return render(request, 'love_query.html')
-
 def memories(request):
     return render(request, 'memories.html')
 def forever_vault(request):
