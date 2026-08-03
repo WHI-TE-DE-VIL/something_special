@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- FIXED: Moved to top right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,27 +117,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/'  # <-- FIXED: Added leading slash
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # <-- FIXED: Standardized path for WhiteNoise
-
-# <-- FIXED: Switched to serverless-friendly storage engine
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-import os
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Ensure these match exactly
 STATIC_URL = '/static/'
 
+# Where your source development assets sit
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Home', 'static'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+# Where Django forces production aggregation mapping
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# THE PERFECT VERCEL FIX: Use standard storage so un-hashed assets serve smoothly
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
