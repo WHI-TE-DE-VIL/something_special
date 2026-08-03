@@ -171,6 +171,7 @@
     </div>
 
     <script>
+        // PREMIUM DESTINY MATRIX DATA
         const destinyDatabase = [
             { index: 0, marker: "I. Origin", title: "The Day Alive... ❤️", body: "The moment you officially entered my path, every piece of my world changed for the better. Thank you for choosing to walk alongside me and making the beginning of this year the happiest step of my life." },
             { index: 1, marker: "II. Glow", title: "Your Radiant Smile ✨", body: "Whenever the days get heavy, your smile is my perfect refuge. It brings a pure, glowing clarity into my timeline that lights up even my most stressful thoughts." },
@@ -184,10 +185,15 @@
         let isSpinning = false;
         let currentRotation = 0;
 
+        // Clear any old messy elements inside the wheel canvas first
+        wheel.innerHTML = '';
+
+        // Build clean wheel sectors with a -30deg balance so the text centers inside each slice
         destinyDatabase.forEach((item) => {
             const el = document.createElement('div');
             el.className = 'wheel-sector';
-            el.style.transform = `rotate(${item.index * 60}deg)`;
+            // 30deg centers the text inside the 60-degree slice chunk
+            el.style.transform = `rotate(${(item.index * 60) + 30}deg)`;
             el.textContent = item.marker;
             wheel.appendChild(el);
         });
@@ -196,24 +202,24 @@
             if (isSpinning) return;
             isSpinning = true;
 
-            // 1. Pick a random winning data index (0 to 5) FIRST
-            const winningDataIndex = Math.floor(Math.random() * 6);
-            const data = destinyDatabase[winningDataIndex];
+            // 1. Pre-select the winning memory layout directly
+            const winningIndex = Math.floor(Math.random() * 6);
+            const data = destinyDatabase[winningIndex];
 
-            // 2. THE ULTIMATE MATH FIX:
-            // Calculate the exact stopping degree for that data index under the top needle pointer
-            // Slice 0 (Origin) = 0deg, Slice 1 (Glow) = 300deg, Slice 2 (Anchor) = 240deg...
-            const targetStoppingDegree = (6 - winningDataIndex) % 6 * 60;
+            // 2. THE ABSOLUTE GEOMETRY FIX:
+            // Slices are generated clockwise: 0 at top, 1 at right, etc.
+            // To bring an index to the top needle, the wheel must rotate counter-clockwise by its angle offset.
+            const degreeNeededAtTop = (360 - (winningIndex * 60)) % 360;
 
-            // 3. Reset the wheel to its clean modulo baseline position first, then add 5 full dramatic spins (1800deg)
-            const cleanBaselineRotation = currentRotation % 360;
-            currentRotation = currentRotation - cleanBaselineRotation + targetStoppingDegree + 1800;
+            // 3. Reset the wheel tracking matrix to baseline, then append 5 full cinematic spins (1800deg)
+            const currentModulo = currentRotation % 360;
+            currentRotation = currentRotation - currentModulo + degreeNeededAtTop + 1800;
 
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
             // 4. Wait for the 4-second animation transition to complete
             setTimeout(() => {
-                // Populate the popup content with the perfectly pre-selected matching data item
+                // Populate the popup content text boxes safely
                 document.getElementById('popupChapter').textContent = data.marker;
                 document.getElementById('popupTitle').textContent = data.title;
                 document.getElementById('popupBody').textContent = data.body;
@@ -223,13 +229,10 @@
             }, 4000);
         }
 
-
-
         function closeScroll() {
             document.getElementById('cosmicLightbox').classList.remove('active');
         }
 
-        // ERROR ROUTING REPAIR: Change "/ending-page/" to your exact ending URL url-name tag or path hook
         function nextPage() {
             window.location.href = "/ending-page/";
         }
