@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Next Chapter</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #23081a 0%, #050105 100%);
+            font-family: 'Poppins', sans-serif; overflow-x: hidden; overflow-y: auto;
+            color: #ffffff; display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+
+        /* CELEBRATORY SPARKS CANVAS LAYER */
+        #celebrationCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* VINTAGE LINEN PAPYRUS CARD ACCENT */
+        .linen-letter-wrapper {
+            background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); border-radius: 24px;
+            border: 1px solid rgba(255, 183, 197, 0.2); padding: 45px;
+            max-width: 600px; width: 85%; box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            z-index: 5; text-align: center; position: relative; margin: 40px 0;
+        }
+
+        .letter-header {
+            font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700;
+            color: #ffb7c5; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px;
+        }
+
+        /* TYPEWRITER WRAPPER PANEL */
+        .typewriter-content {
+            font-size: 1.1rem; line-height: 1.8; color: rgba(255, 255, 255, 0.9);
+            font-weight: 300; text-align: justify; white-space: pre-line;
+            min-height: 200px; margin-bottom: 35px;
+        }
+
+        /* TYPEWRITER BLINKING FLASHING CURSOR PRESET */
+        .typewriter-content::after {
+            content: ' |'; font-weight: 600; color: #ff66b2;
+            animation: blinkCursor 0.8s infinite alternate;
+        }
+        .typewriter-content.typing-done::after { display: none; }
+
+        @keyframes blinkCursor {
+            0% { opacity: 0; } 100% { opacity: 1; }
+        }
+
+        /* CALLIGRAPHY CLOSING NOTE */
+        .letter-signoff {
+            font-family: 'Great Vibes', cursive; font-size: 2.8rem;
+            color: #ffb7c5; opacity: 0; transform: translateY(10px);
+            transition: all 1.5s ease; margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 183, 197, 0.4);
+        }
+        .letter-signoff.reveal { opacity: 1; transform: translateY(0); }
+
+        /* PULSING FINAL REPLAY RESET BUTTON */
+        .replay-btn {
+            background: transparent; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 12px 40px; font-family: 'Cinzel', serif; font-size: 0.85rem;
+            border-radius: 4px; cursor: pointer; letter-spacing: 2px; text-transform: uppercase;
+            opacity: 0; transform: scale(0.95); transition: all 1s ease;
+        }
+        .replay-btn.reveal { opacity: 1; transform: scale(1); }
+        .replay-btn:hover {
+            background: #ffffff; color: #23081a; border-color: #ffffff;
+            box-shadow: 0 0 30px #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Celebration Physics Overlay Render Target -->
+    <canvas id="celebrationCanvas"></canvas>
+
+    <div class="linen-letter-wrapper">
+        <div class="letter-header">Our Forever Blueprint</div>
+
+        <!-- Live typing injection panel -->
+        <div class="typewriter-content" id="typewriterBox"></div>
+
+        <div class="letter-signoff" id="signoffBox">Yours Forever & Always ❤️</div>
+
+        <button class="replay-btn" id="replayBtn" onclick="restartJourney()">Replay Our Story</button>
+    </div>
+
+    <script>
+        // WRITE YOUR ULTIMATE EMOTIONAL LETTER INSIDE THIS STRING VARIABLE
+        const closingLetterText = "To the person who holds my entire heart,\n\nWalking through this year with you has been the greatest adventure of my life. Thank you for your warmth, your patience, and for making me feel loved in ways I never thought possible. Every memory we created this year is carved deeply into who I am.\n\nNo matter where our paths take us, or what challenges the future brings, I promise to stand by you, celebrate you, and love you more with each passing day. This isn't just the end of a year... it's the beautiful prelude to our entire forever.";
+
+        const typewriterBox = document.getElementById('typewriterBox');
+        let charIndex = 0;
+
+        function runTypewriterEffect() {
+            if (charIndex < closingLetterText.length) {
+                typewriterBox.textContent += closingLetterText.charAt(charIndex);
+                charIndex++;
+
+                // Adjust this integer value to speed up or slow down writing speed (in milliseconds)
+                setTimeout(runTypewriterEffect, 35);
+            } else {
+                // Letter typing complete! Reveal actions and launch celebrations
+                typewriterBox.classList.add('typing-done');
+                document.getElementById('signoffBox').classList.add('reveal');
+                document.getElementById('replayBtn').classList.add('reveal');
+                triggerEruptionBurst();
+            }
+        }
+
+        // Initialize script trigger delays
+        window.onload = () => {
+            setTimeout(runTypewriterEffect, 1500);
+        };
+
+        // CELEBRATION FLOATING SPARKS & HEARTS CANVAS CODE ENGINE
+        const canvas = document.getElementById('celebrationCanvas');
+        const ctx = canvas.getContext('2d');
+        const elementsArray = [];
+        let allowContinuousSpawn = false;
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function triggerEruptionBurst() {
+            allowContinuousSpawn = true;
+
+            // Generate a massive initial celebration explosion blast matrix
+            for (let i = 0; i < 60; i++) {
+                elementsArray.push(createNewParticle(canvas.width / 2, canvas.height / 2 + 100, true));
+            }
+            animateCelebration();
+        }
+
+        function createNewParticle(x, y, isExplosion = false) {
+            const isHeart = Math.random() > 0.4;
+            return {
+                x: x,
+                y: y,
+                vx: isExplosion ? (Math.random() - 0.5) * 8 : (Math.random() - 0.5) * 2,
+                vy: isExplosion ? -(3 + Math.random() * 8) : -(1 + Math.random() * 2),
+                size: Math.random() * 3 + 2,
+                heartScale: Math.random() * 8 + 6,
+                alpha: 1,
+                decay: 0.005 + Math.random() * 0.01,
+                isHeart: isHeart,
+                color: isHeart ? `rgba(${230 + Math.random() * 25}, ${70 + Math.random() * 50}, ${120 + Math.random() * 40}, ` : `rgba(255, ${200 + Math.random() * 55}, 150, `
+            };
+        }
+
+        function drawHeartShape(x, y, size) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + size / 4);
+            ctx.quadraticCurveTo(x, y, x - size / 2, y);
+            ctx.quadraticCurveTo(x - size, y, x - size, y + size / 2);
+            ctx.quadraticCurveTo(x - size, y + (size * 3) / 4, x, y + size);
+            ctx.quadraticCurveTo(x + size, y + (size * 3) / 4, x + size, y + size / 2);
+            ctx.quadraticCurveTo(x + size, y, x + size / 2, y);
+            ctx.quadraticCurveTo(x, y, x, y + size / 4);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function animateCelebration() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ambient background continuous spawn from the bottom once letter completes
+            if (allowContinuousSpawn && elementsArray.length < 100) {
+                elementsArray.push(createNewParticle(Math.random() * canvas.width, canvas.height + 10));
+            }
+
+            for (let i = elementsArray.length - 1; i >= 0; i--) {
+                const p = elementsArray[i];
+                p.x += p.vx; p.y += p.vy;
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    elementsArray.splice(i, 1);
+                } else {
+                    ctx.fillStyle = p.color + p.alpha + ")";
+                    if (p.isHeart) {
+                        drawHeartShape(p.x, p.y, p.heartScale);
+                    } else {
+                        ctx.fillRect(p.x, p.y, p.size, p.size);
+                    }
+                }
+            }
+            requestAnimationFrame(animateCelebration);
+        }
+
+        function restartJourney() {
+            // LOOP REDIRECTION BACK TO HOME PAGE
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>

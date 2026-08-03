@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Confession To You</title>
+    <!-- Premium Romantic Calligraphy Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #060105; font-family: 'Poppins', sans-serif;
+            overflow: hidden; color: #ffffff;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 3s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        /* BACKGROUND GRADIENT TRANSITION WHEN CLIMAX ACCELERATES */
+        body.climax-bg {
+            background: radial-gradient(circle at center, #3a0b23 0%, #060105 100%);
+        }
+
+        /* DYNAMIC CINEMATIC TEXT BOX */
+        .text-stage-container {
+            text-align: center; max-width: 750px; width: 85%;
+            z-index: 10; position: relative;
+        }
+
+        .cinematic-sentence {
+            font-family: 'Cinzel', serif; font-size: calc(1.3rem + 0.8vw);
+            line-height: 1.6; font-weight: 400; letter-spacing: 2px;
+            opacity: 0; transform: scale(0.96) translateY(10px);
+            transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: absolute; width: 100%; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.96); pointer-events: none;
+        }
+
+        /* Calligraphy emphasis rules */
+        .cinematic-sentence span {
+            font-family: 'Great Vibes', cursive !important;
+            font-size: calc(2.4rem + 1vw); color: #ffb7c5;
+            text-shadow: 0 0 15px rgba(255, 183, 197, 0.6);
+            display: block; margin-top: 10px; text-transform: none; letter-spacing: 0;
+        }
+
+        .cinematic-sentence.active {
+            opacity: 1; transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* LUXURIOUS CLOSING VAULT KEY BUTTON */
+        .vault-portal-card {
+            opacity: 0; transform: scale(0.9) translateY(20px);
+            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
+            text-align: center; pointer-events: none;
+        }
+        .vault-portal-card.reveal {
+            opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
+        }
+
+        .mystic-label {
+            font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.7); text-transform: uppercase; margin-bottom: 25px;
+        }
+
+        .glowing-key-btn {
+            background: transparent; color: #ffffff;
+            border: 2px solid #ff66b2; padding: 16px 45px;
+            font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700;
+            border-radius: 4px; cursor: pointer; letter-spacing: 3px;
+            text-transform: uppercase; transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(255, 102, 178, 0.2), inset 0 0 10px rgba(255, 102, 178, 0.1);
+        }
+
+        .glowing-key-btn:hover {
+            background: #ffffff; color: #3a0b23; border-color: #ffffff;
+            box-shadow: 0 0 40px #ffffff, 0 0 20px rgba(255, 102, 178, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* PARTICLE FX CANVAS */
+        #climaxCanvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2s ease;
+        }
+        #climaxCanvas.active { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Engine Overlay Canvas Layer -->
+    <canvas id="climaxCanvas"></canvas>
+
+    <div class="text-stage-container">
+        <!-- DRAMATIC STORY LINES ARRAY LAYER -->
+        <div class="cinematic-sentence" id="line0">In a world of billions of moving paths...</div>
+        <div class="cinematic-sentence" id="line1">My heart stopped searching the second it found <span>Your Face</span></div>
+        <div class="cinematic-sentence" id="line2">Thank you for your infinite patience, your support, and your beautiful care.</div>
+        <div class="cinematic-sentence" id="line3">I loved you yesterday. I love you right now.</div>
+        <div class="cinematic-sentence" id="line4">And I will love you through every single <span>Future Chapter</span> waiting for us ahead.</div>
+
+        <!-- CHARISMATIC ENDING ACCESS PORTAL BLOCK -->
+        <div class="vault-portal-card" id="finalPortal">
+            <div class="mystic-label">You hold the key to everything I am.</div>
+            <button class="glowing-key-btn" onclick="triggerVaultTransition()">Unlock My Forever Vault</button>
+        </div>
+    </div>
+
+    <script>
+        const totalLinesCount = 5;
+        let activeLineIndex = 0;
+
+        function playRomanticSymphony() {
+            if (activeLineIndex < totalLinesCount) {
+                const currentLine = document.getElementById(`line${activeLineIndex}`);
+
+                // Fade in the phrase line item
+                currentLine.classList.add('active');
+
+                // Leave it readable on screen for 4.2 seconds, then rotate forward
+                setTimeout(() => {
+                    currentLine.classList.remove('active');
+                    activeLineIndex++;
+
+                    // Small delay break spacing before pulling up the subsequent card prompt
+                    setTimeout(playRomanticSymphony, 800);
+                }, 4200);
+            } else {
+                // RUN EPIC VISUAL CLIMAX REVEAL SEQUENCE
+                document.body.classList.add('climax-bg');
+                document.getElementById('climaxCanvas').classList.add('active');
+                document.getElementById('finalPortal').classList.add('reveal');
+                startSparkEngine();
+            }
+        }
+
+        // Initialize script sequence execution delay framework context
+        window.onload = () => {
+            setTimeout(playRomanticSymphony, 1500);
+        };
+
+        // CANVAS GOLD SPARK GRAPHICS GENERATOR MECHANICS
+        const canvas = document.getElementById('climaxCanvas');
+        const ctx = canvas.getContext('2d');
+        const sparksArray = [];
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function startSparkEngine() {
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (sparksArray.length < 40) {
+                    sparksArray.push({
+                        x: Math.random() * canvas.width,
+                        y: canvas.height + 10,
+                        vy: -(0.5 + Math.random() * 1.5),
+                        vx: (Math.random() - 0.5) * 0.8,
+                        size: Math.random() * 2 + 0.5,
+                        alpha: Math.random() * 0.7 + 0.3
+                    });
+                }
+
+                for (let i = sparksArray.length - 1; i >= 0; i--) {
+                    const s = sparksArray[i];
+                    s.y += s.vy; s.x += s.vx;
+                    if (s.y < -10) { sparksArray.splice(i, 1); }
+                    else {
+                        ctx.fillStyle = `rgba(255, 183, 197, ${s.alpha})`;
+                        ctx.fillRect(s.x, s.y, s.size, s.size);
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // TRANSITION GATEWAY FORWARD TO PRIMARY PORTAL APP
+        function triggerVaultTransition() {
+            // ROUTING REDIRECTION FIX: Hook this path url parameter directly to your local Forever Vault route
+            window.location.href = "/forever-vault/";
+        }
+    </script>
+</body>
+</html>

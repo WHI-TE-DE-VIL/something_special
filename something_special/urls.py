@@ -33,6 +33,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.admin_site_urls if hasattr(admin.site, 'admin_site_urls') else admin.site.urls),
     path('', include('Home.urls')), # Your primary apps route map link
+    path('do-you-love-me/', include('Home.urls')),  # MAKE SURE THIS IS HERE
+    path('beginning/', include('Home.urls')),
+    path('forever-vault/', include('Home.urls')),
+    path('memories/', include('Home.urls')),
+    path('ending/', include('Home.urls')),
 ]
 
 # THE CRITICAL DEPLOYMENT ROUTE ADDITION

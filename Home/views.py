@@ -9,5 +9,12 @@ def love_query(request):
 
 def memories(request):
     return render(request, 'memories.html')
-def final_vault(request):
+def forever_vault(request):
     return render(request, 'final_vault.html')
+def beginning(request):
+    return render(request, 'beginning.html')
+def ending(request):
+    return render(request, 'ending.html')
+def ending_page(request):
+    # This renders the 5th final living letter celebration canvas
+    return render(request, 'ending.html')

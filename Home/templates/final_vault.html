@@ -302,6 +302,27 @@
             margin: 0;
             font-weight: 400;
         }
+        .vault-next-btn {
+            background: transparent;
+            color: #ffb7c5;
+            border: 1px solid #ff66b2;
+            padding: 14px 40px;
+            font-family: 'Cinzel', serif; /* Or fallback to sans-serif if you don't load Cinzel here */
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(255, 102, 178, 0.15);
+        }
+        .vault-next-btn:hover {
+            background: #ff66b2;
+            color: #ffffff;
+            box-shadow: 0 0 30px rgba(255, 102, 178, 0.6);
+            transform: translateY(-3px) scale(1.03);
+        }
     </style>
 </head>
 <body>
@@ -359,6 +380,9 @@
                     I love bubu
                 </p>
             </div>
+        <div style="text-align: center; margin-top: 40px; position: relative; z-index: 100;">
+            <button class="vault-next-btn" onclick="navigateToWheel()">Unlock Our Destiny Wheel</button>
+        </div>
         </div>
     </div>
 
@@ -448,6 +472,11 @@
                 audio.play().catch(e => console.log(e));
             }
         });
+
+        function navigateToWheel() {
+            // Safe relative path route that maps straight into Page 4 (the wheel)
+            window.location.href = "/memories/";
+        }
 
     </script>
 </body>

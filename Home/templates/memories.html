@@ -1,185 +1,226 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Memory Jar</title>
-    <!-- Google Fonts Links -->
+    <title>Our Destiny Cosmic Wheel</title>
+    <!-- Premium Google Fonts Framework Elements -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            background: linear-gradient(135deg, #ffb7c5, #ff66b2);
+            background: radial-gradient(circle at center, #2c0e25 0%, #0d040c 100%);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; position: relative;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow-x: hidden; overflow-y: auto; color: #ffffff;
+            display: flex; flex-direction: column; align-items: center; position: relative;
         }
 
-        /* CARD HEADER INTERFACE */
-        .intro-text-card {
-            background: rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 25px; max-width: 550px; width: 85%; text-align: center;
-            box-shadow: 0 15px 35px rgba(218, 24, 132, 0.25);
-            margin-bottom: 20px; z-index: 10;
+        /* AMBIENT CELESTIAL BACKGROUND STARS EFFECT */
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(white 1px, transparent 1px); background-size: 80px 80px;
+            opacity: 0.15; pointer-events: none; z-index: 1;
         }
 
-        .glowing-text {
-            font-family: 'Great Vibes', cursive !important; color: #ffffff;
-            font-size: 2.5rem; line-height: 1.2; margin: 0 0 10px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.85);
+        /* CINEMATIC CONTAINER MODULE */
+        .stage-wrapper {
+            position: relative; z-index: 5; text-align: center; max-width: 600px; width: 90%;
+            padding: 40px 20px 100px 20px; display: flex; flex-direction: column; align-items: center;
         }
 
-        .action-btn {
-            background: rgba(255, 255, 255, 0.25); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 10px 32px; font-size: 0.95rem; font-weight: 600; border-radius: 50px; cursor: pointer;
-            transition: all 0.3s ease; margin-top: 10px;
-        }
-        .action-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
-
-        /* THE CHIC INTERACTIVE MASON JAR Container */
-        .jar-container {
-            position: relative; width: 200px; height: 280px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 4px solid rgba(255, 255, 255, 0.6);
-            border-radius: 30px 30px 60px 60px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset 0 0 20px rgba(255,255,255,0.4);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: transform 0.3s ease; z-index: 5;
+        .mystic-header {
+            background: rgba(13, 4, 12, 0.6); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 102, 178, 0.25); border-radius: 24px; padding: 30px;
+            box-shadow: 0 0 40px rgba(218, 24, 132, 0.15); margin-bottom: 50px; width: 100%; box-sizing: border-box;
         }
 
-        .jar-container:hover {
-            transform: scale(1.05) rotate(1deg);
+        .title-gold {
+            font-family: 'Cinzel', serif; font-size: calc(1.5rem + 0.8vw); font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #ffb7c5 50%, #ff66b2 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 0 0 15px 0; letter-spacing: 2px; text-transform: uppercase;
         }
 
-        /* Jar Neck and Lid details using pure CSS elements */
-        .jar-container::before {
-            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 120px; height: 15px; background: rgba(255, 255, 255, 0.5);
-            border: 3px solid rgba(255, 255, 255, 0.6); border-radius: 10px 10px 0 0;
+        .mystic-text { font-size: 0.95rem; line-height: 1.6; opacity: 0.85; margin: 0 0 20px 0; font-weight: 300; }
+
+        .luxury-btn {
+            background: transparent; color: #ffb7c5; border: 1px solid #ff66b2;
+            padding: 12px 36px; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700;
+            border-radius: 4px; cursor: pointer; letter-spacing: 2px; transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(255, 102, 178, 0.1); text-transform: uppercase;
+        }
+        .luxury-btn:hover { background: #ff66b2; color: #ffffff; box-shadow: 0 0 25px rgba(255, 102, 178, 0.5); transform: translateY(-1px); }
+
+        /* THE COSMIC SPINNING WHEEL ARCHITECTURE */
+        .wheel-outer-frame {
+            position: relative; width: 340px; height: 340px; border-radius: 50%;
+            border: 2px solid rgba(255, 183, 197, 0.4); padding: 10px;
+            box-shadow: 0 0 50px rgba(218, 24, 132, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
         }
 
-        .jar-label {
-            font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #ffffff;
-            text-align: center; pointer-events: none; user-select: none;
-            text-shadow: 0 2px 10px rgba(218, 24, 132, 0.3);
+        .wheel-canvas {
+            width: 100%; height: 100%; border-radius: 50%; position: relative;
+            background: conic-gradient(
+                #1a0716 0deg 60deg, #250b20 60deg 120deg,
+                #1a0716 120deg 180deg, #250b20 180deg 240deg,
+                #1a0716 240deg 300deg, #250b20 300deg 360deg
+            );
+            border: 4px solid #ffffff; box-sizing: border-box;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
         }
 
-        /* FLOATING HEARTS INSIDE THE JAR CONTAINER */
-        .mini-heart {
-            position: absolute; font-size: 20px; opacity: 0.75;
-            animation: drift 3s ease-in-out infinite alternate; pointer-events: none;
+        /* Sector dividing layout markers */
+        .wheel-sector {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 25px; box-sizing: border-box; font-family: 'Cinzel', serif;
+            font-size: 0.9rem; font-weight: 700; color: rgba(255, 183, 197, 0.9);
+            transform-origin: 50% 50%; user-select: none; pointer-events: none;
         }
 
-        @keyframes drift {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(-15px) translateX(10px); }
+        /* FIXED NEEDLE INDICATOR */
+        .wheel-pointer {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;
+            border-top: 30px solid #ffffff; z-index: 15; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
         }
 
-        /* EXPANDABLE LIGHTBOX MODAL DIALOG */
+        /* CORE INTERACTIVE WHEEL HUB TRIGGER HUB BUTTON */
+        .wheel-hub-trigger {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80px; height: 80px; background: #ffffff; border-radius: 50%;
+            z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: #0d040c;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 15px rgba(218, 24, 132, 0.4);
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .wheel-hub-trigger:hover { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 40px rgba(255, 255, 255, 1); }
+
+        /* NEBULOUS REVEAL DIALOG LIGHTBOX CONTAINER */
         .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center;
-            z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 4, 12, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex;
+            justify-content: center; align-items: center; z-index: 200; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
         }
         .lightbox.active { opacity: 1; pointer-events: auto; }
 
-        .parchment-card {
-            background: #fffdf9; color: #333333; padding: 35px; border-radius: 20px;
-            max-width: 420px; width: 85%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border: 2px solid #ff66b2; transform: scale(0.8) rotate(-3deg);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .mystic-scroll-card {
+            background: radial-gradient(circle at top left, #250b20 0%, #120510 100%);
+            border: 1px solid rgba(255, 183, 197, 0.3); border-radius: 20px; padding: 40px;
+            max-width: 440px; width: 85%; text-align: center; color: #ffffff;
+            box-shadow: 0 0 60px rgba(218, 24, 132, 0.3), inset 0 0 20px rgba(255,255,255,0.05);
+            transform: scale(0.85) translateY(30px); transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
         }
-        .lightbox.active .parchment-card { transform: scale(1) rotate(0deg); }
+        .lightbox.active .mystic-scroll-card { transform: scale(1) translateY(0); }
 
-        .note-badge { font-size: 3.5rem; margin-bottom: 10px; }
-        .note-title { font-family: 'Great Vibes', cursive; font-size: 2.6rem; color: #da1884; margin-bottom: 15px; }
-        .note-body { font-size: 1.05rem; line-height: 1.5; color: #555555; font-family: 'Poppins', sans-serif; }
-        .close-hint { font-size: 0.8rem; color: #999999; margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .scroll-chapter { font-family: 'Cinzel', serif; font-size: 1.1rem; color: #ff66b2; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .scroll-title { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: #ffffff; margin: 0 0 20px 0; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .scroll-body { font-size: 1.02rem; line-height: 1.6; color: rgba(255,255,255,0.85); font-weight: 300; text-align: justify; white-space: pre-line; margin-bottom: 25px; }
+        .scroll-close-hint { font-family: 'Cinzel', serif; font-size: 0.75rem; color: rgba(255, 183, 197, 0.5); margin-top: 30px; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* SECOND POPUP BUTTON ADJUSTMENT */
+        .inline-action-btn {
+            background: linear-gradient(135deg, #ff66b2 0%, #da1884 100%); color: #ffffff; border: none;
+            padding: 10px 28px; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700;
+            border-radius: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(218, 24, 132, 0.4); text-transform: uppercase;
+        }
+        .inline-action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(218, 24, 132, 0.6); }
     </style>
 </head>
 <body>
 
-    <div class="intro-text-card">
-        <div class="glowing-text">Our Memory Jar</div>
-        <p style="color: white; margin: 0; opacity: 0.95; font-size: 0.95rem; line-height: 1.4;">
-            Thank you for making my year fruitful.❤️ Thank you for your support, care, love, patience and everything you gave me in this year.❤️
-        </p>
-        <p style="color: #ffe4e1; font-weight: 600; margin: 8px 0 0 0; font-size: 0.9rem;">
-            ✨ Click on the glass jar to pull out a memory scroll! ✨
-        </p>
-        <button class="action-btn" onclick="nextPage()">Our Next Chapter</button>
+    <div class="stage-wrapper">
+        <div class="mystic-header">
+            <div class="title-gold">The Wheel of Destiny</div>
+            <p class="mystic-text">
+                Thank you for making my year fruitful.❤️ Thank you for your support, care, love, patience and everything you gave me in this year.❤️
+                Our timeline wasn't an accident—it was written in the stars.
+            </p>
+        </div>
+
+        <!-- 3D INTERACTIVE COSMIC WHEEL MATRIX -->
+        <div class="wheel-outer-frame">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-hub-trigger" id="spinBtn" onclick="spinDestinyWheel()">Spin</div>
+            <div class="wheel-canvas" id="destinyWheel">
+                <!-- Mechanical rotation nodes populated automatically by Javascript -->
+            </div>
+        </div>
     </div>
 
-    <!-- THE INTERACTIVE CSS MASON JAR -->
-    <div class="jar-container" id="loveJar" onclick="pullMemory()">
-        <div class="jar-label">Reasons<br>I Love<br>You</div>
+    <!-- GLOWING COSMIC CONTENT POPUP LIGHTBOX -->
+    <div class="lightbox" id="cosmicLightbox" onclick="closeScroll()">
+        <div class="mystic-scroll-card" onclick="event.stopPropagation()">
+            <div class="scroll-chapter" id="popupChapter">Chapter I</div>
+            <div class="scroll-title" id="popupTitle">The Core Moment</div>
+            <div class="scroll-body" id="popupBody">Memory textual script reads here.</div>
 
-        <!-- Ambient decorative background hearts inside jar -->
-        <div class="mini-heart" style="top: 40px; left: 30px; animation-delay: 0s;">❤️</div>
-        <div class="mini-heart" style="top: 80px; right: 40px; animation-delay: 0.5s;">💖</div>
-        <div class="mini-heart" style="bottom: 50px; left: 50px; animation-delay: 1.2s;">❤️</div>
-        <div class="mini-heart" style="bottom: 70px; right: 35px; animation-delay: 0.8s;">💕</div>
-    </div>
+            <!-- FIXED PLACEMENT SUGGESTION: Integrated directly into the letter experience -->
+            <button class="inline-action-btn" onclick="nextPage()">Final Chapter</button>
 
-    <!-- MEMORY EXPANSION LIGHTBOX LAYOUT -->
-    <div class="lightbox" id="noteLightbox" onclick="closeLightbox()">
-        <div class="parchment-card" onclick="event.stopPropagation()">
-            <div class="note-badge" id="popupBadge">💝</div>
-            <div class="note-title" id="popupTitle">Memory #1</div>
-            <div class="note-body" id="popupBody">Message contents appear here dynamically.</div>
-            <div class="close-hint">— Tap outside to slide note back inside jar —</div>
+            <div class="scroll-close-hint">— Click outside to release scroll —</div>
         </div>
     </div>
 
     <script>
-        // EXPANDABLE 50-SLOT EXTENSIBLE ROMANTIC STORAGE DATABASE
-        const memoryJarDatabase = [
-            { id: 1, badge: "❤️", title: "The Beginning", body: "The day you made me the happiest person alive. My complete life trajectory shifted into a brighter space the second you chose to hold my hand." },
-            { id: 2, badge: "✨", title: "Your Radiance", body: "Your beautiful smile lights up my whole world. It completely melts away even my absolute heaviest and most stressful days." },
-            { id: 3, badge: "🌧️", title: "My Safe Haven", body: "My favorite place in the entire world is standing right next to you, completely sheltered through any storm life throws at us." },
-            { id: 4, badge: "😂", title: "Our Laughs", body: "Every single laugh we share is a golden memory I treasure. Thank you for making my life endlessly fun and keeping me smiling." },
-            { id: 5, badge: "💪", title: "Unwavering Support", body: "Thank you for staying firmly by my side and supporting each other with endless care and patience through every single high and low this year." },
-            { id: 6, badge: "☕", title: "The Small Talks", body: "I love the cozy, random late-night conversations that make absolutely no sense but mean the entire universe to me." },
-            { id: 7, badge: "🌸", title: "Your Kindness", body: "The quiet, beautiful way you care for me when I am tired. Your soft heart is my absolute favorite asset in this world." }
+        const destinyDatabase = [
+            { index: 0, marker: "I. Origin", title: "The Day Alive... ❤️", body: "The moment you officially entered my path, every piece of my world changed for the better. Thank you for choosing to walk alongside me and making the beginning of this year the happiest step of my life." },
+            { index: 1, marker: "II. Glow", title: "Your Radiant Smile ✨", body: "Whenever the days get heavy, your smile is my perfect refuge. It brings a pure, glowing clarity into my timeline that lights up even my most stressful thoughts." },
+            { index: 2, marker: "III. Anchor", title: "Through Thick & Thin 💖", body: "Thank you for staying by my side with endless patience, support, and care. True alignment is standing firm when the storms roll in, and holding your hand through it all has been my greatest honor." },
+            { index: 3, marker: "IV. Haven", title: "Right Next To You 🌧️", body: "It doesn't matter where we are or what we are doing; as long as I am sitting right next to you, I am home. Even the simplest afternoon spent inside your presence becomes a timeless memory." },
+            { index: 4, marker: "V. Echo", title: "Treasured Laughter 😂", body: "From our silent inside jokes to the late-night conversations that make absolutely no sense, my memory walls are echoed with your laugh. Thank you for keeping our relationship so fun and bright." },
+            { index: 5, marker: "VI. Future", title: "Our Next Frontier 💪", body: "Looking forward, I promise to stand behind you for whatever frontiers come next. I am your teammate, your supporter, and your protector for life. Cheers to an incredible year, and to everything waiting for us." }
         ];
 
-        let historyTrack = [];
+        const wheel = document.getElementById('destinyWheel');
+        let isSpinning = false;
+        let currentRotation = 0;
 
-        function pullMemory() {
-            // If all elements have been displayed once, reset tracking track loop cleanly
-            if (historyTrack.length === memoryJarDatabase.length) {
-                historyTrack = [];
-            }
+        destinyDatabase.forEach((item) => {
+            const el = document.createElement('div');
+            el.className = 'wheel-sector';
+            el.style.transform = `rotate(${item.index * 60}deg)`;
+            el.textContent = item.marker;
+            wheel.appendChild(el);
+        });
 
-            // Select elements randomly ensuring no immediate side-by-side duplicates
-            let selectedIndex;
-            do {
-                selectedIndex = Math.floor(Math.random() * memoryJarDatabase.length);
-            } while (historyTrack.includes(selectedIndex));
+        function spinDestinyWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
 
-            historyTrack.push(selectedIndex);
-            const memory = memoryJarDatabase[selectedIndex];
+            const targetSectorIndex = Math.floor(Math.random() * 6);
+            const additionalRotations = 1800 + (360 - (targetSectorIndex * 60));
+            currentRotation += additionalRotations;
 
-            // Assign variables to lightbox dialog
-            document.getElementById('popupBadge').textContent = memory.badge;
-            document.getElementById('popupTitle').textContent = memory.title;
-            document.getElementById('popupBody').textContent = memory.body;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-            // Pop open the animation frame
-            document.getElementById('noteLightbox').classList.add('active');
+            setTimeout(() => {
+                const data = destinyDatabase[targetSectorIndex];
+
+                document.getElementById('popupChapter').textContent = data.marker;
+                document.getElementById('popupTitle').textContent = data.title;
+                document.getElementById('popupBody').textContent = data.body;
+
+                document.getElementById('cosmicLightbox').classList.add('active');
+                isSpinning = false;
+            }, 4000);
         }
 
-        function closeLightbox() {
-            document.getElementById('noteLightbox').classList.remove('active');
+        function closeScroll() {
+            document.getElementById('cosmicLightbox').classList.remove('active');
         }
 
+        // ERROR ROUTING REPAIR: Change "/ending-page/" to your exact ending URL url-name tag or path hook
         function nextPage() {
-            window.location.href = "/";
+            window.location.href = "/ending-page/";
         }
     </script>
 </body>
