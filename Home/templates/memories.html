@@ -1,204 +1,80 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Year Together</title>
-    <!-- CRITICAL: Google Fonts CDN framework links to enable calligraphy cursive script -->
+    <!-- Google Fonts Links -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            margin: 0; padding: 0; min-height: 100vh;
             background: linear-gradient(135deg, #ffb7c5, #ff66b2);
             font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
+            overflow-x: hidden; overflow-y: auto; position: relative;
         }
-
-        /* LOCKED TEXT LAYER: Stays fixed in the center of the screen view */
         .locked-center-wrapper {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 680px;
-            z-index: 100;
-            text-align: center;
-            box-sizing: border-box;
-            pointer-events: none;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 680px; z-index: 100; text-align: center; pointer-events: none;
         }
-
         .matte-text-card {
-            pointer-events: auto;
-            background: rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 35px;
-            box-shadow: 0 15px 35px rgba(218, 24, 132, 0.25),
-                        inset 0 0 15px rgba(255, 255, 255, 0.15);
+            pointer-events: auto; background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.35); padding: 35px;
+            box-shadow: 0 15px 35px rgba(218, 24, 132, 0.25);
         }
-
-        /* Calligraphy font rules matching the landing page */
         .glowing-text {
-            font-family: 'Great Vibes', cursive !important;
-            font-style: normal !important;
-            font-weight: 400 !important;
-            color: #ffffff;
-            font-size: calc(1.7rem + 0.6vw);
-            line-height: 1.2;
-            margin: 0 0 25px 0;
-            text-align: center;
-            text-shadow:
-                0 0 10px rgba(255, 255, 255, 0.85),
-                0 0 25px rgba(255, 20, 147, 0.9),
-                0 0 50px rgba(255, 20, 147, 0.5);
+            font-family: 'Great Vibes', cursive !important; color: #ffffff;
+            font-size: calc(1.7rem + 0.6vw); line-height: 1.2; margin: 0 0 25px 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.85), 0 0 25px rgba(255, 20, 147, 0.9);
             animation: pulse-glow 2.5s ease-in-out infinite alternate;
         }
-
         @keyframes pulse-glow {
-            from { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 25px rgba(255,20,147,0.6); }
-            to { text-shadow: 0 0 15px rgba(255,255,255,0.95), 0 0 35px rgba(255,20,147,1); }
+            from { text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+            to { text-shadow: 0 0 15px rgba(255,255,255,0.95); }
         }
-
         .action-btn {
-            background: rgba(255, 255, 255, 0.25);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 10px 32px;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.25); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 32px; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer;
             transition: all 0.3s ease;
         }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.4);
-        }
-
-        /* MASONRY FLOW COLUMN SYSTEM */
+        .action-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
         .scrappy-column-wrapper {
-            column-count: 4;
-            column-gap: 25px;
-            padding: 40px;
-            max-width: 1500px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
+            column-count: 4; column-gap: 25px; padding: 40px; max-width: 1500px; margin: 0 auto; z-index: 10;
         }
-
         @media (max-width: 1100px) { .scrappy-column-wrapper { column-count: 3; } }
-        @media (max-width: 768px) {
-            .scrappy-column-wrapper { column-count: 2; padding: 15px; column-gap: 15px; }
-            .matte-text-card { padding: 20px; }
-        }
+        @media (max-width: 768px) { .scrappy-column-wrapper { column-count: 2; padding: 15px; } }
         @media (max-width: 480px) { .scrappy-column-wrapper { column-count: 1; } }
-
-        /* Polaroid Photo Card styling */
         .grid-photo-card {
-            background: white;
-            padding: 8px 8px 20px 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            cursor: pointer;
-            border-radius: 4px;
-            margin-bottom: 25px;
-            break-inside: avoid;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-            opacity: 0;
-            transform: scale(0) rotate(0deg);
+            background: white; padding: 8px 8px 20px 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            cursor: pointer; border-radius: 4px; margin-bottom: 25px; break-inside: avoid;
+            transition: transform 0.4s ease, box-shadow 0.3s ease; opacity: 0; transform: scale(0);
         }
-
-        .grid-photo-card.popped {
-            opacity: 1;
-            transform: scale(1) rotate(var(--card-rot));
-        }
-
-        .grid-photo-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 2px;
-        }
-
-        .grid-photo-card:hover {
-            transform: scale(1.06) rotate(0deg) !important;
-            z-index: 50;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
-
-        /* Lightbox frame viewer background overlay */
+        .grid-photo-card.popped { opacity: 1; transform: scale(1) rotate(var(--card-rot)); }
+        .grid-photo-card img { width: 100%; height: auto; display: block; border-radius: 2px; }
         .lightbox {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center;
+            z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
-
-        .lightbox.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        .lightbox.active { opacity: 1; pointer-events: auto; }
         .frame-container {
-            background: #ffffff;
-            padding: 16px 16px 30px 16px;
-            border-radius: 4px;
-            max-width: 420px;
-            width: 85%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
+            background: #ffffff; padding: 16px 16px 30px 16px; border-radius: 4px;
+            max-width: 420px; width: 85%; text-align: center;
         }
-
-        .lightbox.active .frame-container { transform: scale(1); }
-
-        .frame-container img {
-            width: 100%;
-            max-height: 65vh;
-            object-fit: contain;
-            border-radius: 2px;
-        }
-
-        .frame-caption {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
-            color: #333333;
-            margin-top: 15px;
-            line-height: 1.2;
-        }
+        .frame-container img { width: 100%; max-height: 65vh; object-fit: contain; }
+        .frame-caption { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #333333; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <!-- STREAMLINED BACKEND AUDIO ASSIGNMENT -->
+    <!-- CLOUD MP3 LINK -->
     <audio id="bgAudioLoop" loop autoplay>
-        <source src="{% static 'images/song_memories.mp3' %}" type="audio/mpeg">
+        <source src="https://mixkit.co" type="audio/mpeg">
     </audio>
 
-    <!-- Locked Card Layer (Pinned to the screen viewport center) -->
     <div class="locked-center-wrapper">
         <div class="matte-text-card">
             <div class="glowing-text">
@@ -208,10 +84,8 @@
         </div>
     </div>
 
-    <!-- Background Scrapbook Column Container -->
     <div class="scrappy-column-wrapper" id="photoGrid"></div>
 
-    <!-- Polaroid Lightbox Frame Overlay Popup Module -->
     <div class="lightbox" id="photoLightbox" onclick="closeLightbox()">
         <div class="frame-container" onclick="event.stopPropagation()">
             <img id="lightboxImg" src="" alt="Memory Asset">
@@ -220,8 +94,59 @@
     </div>
 
     <script>
-        // Production Route Bridge
-        const staticBase = "/static/";
+        // BULLETPROOF CDN ARRAY GENERATED DIRECTLY FROM YOUR POSTIMAGES GALLERY
+        const imageUrls = [
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc",
+            "https://postimg.cc"
+        ];
 
         const primaryCaptions = [
             "The day you made me the happiest person alive... ❤️",
@@ -233,31 +158,25 @@
         ];
 
         const photoGrid = document.getElementById('photoGrid');
-        const totalPhotos = 50;
 
-        // Clean execution loop layout
-        for (let i = 1; i <= totalPhotos; i++) {
+        imageUrls.forEach((url, index) => {
             const card = document.createElement('div');
             card.className = 'grid-photo-card';
 
             const randomRotation = (Math.random() * 12 - 6).toFixed(2);
             card.style.setProperty('--card-rot', randomRotation + 'deg');
 
-            // EXACT MATCH FIX: Points directly to photo1.jpg, photo2.jpg...
-            const filename = 'photo' + i + '.jpg';
-            const absoluteSrc = staticBase + "images/" + filename;
+            const captionText = primaryCaptions[index] || `Another beautiful moment with you... ✨ (Memory #${index + 1})`;
 
-            const captionText = primaryCaptions[i - 1] || "Another beautiful moment with you... ✨";
-
-            card.innerHTML = '<img src="' + absoluteSrc + '" alt="Memory">';
-            card.onclick = function() { openLightbox(absoluteSrc, captionText); };
+            card.innerHTML = `<img src="${url}" alt="Memory">`;
+            card.onclick = function() { openLightbox(url, captionText); };
 
             photoGrid.appendChild(card);
 
             setTimeout(function() {
                 card.classList.add('popped');
-            }, (i - 1) * 60);
-        }
+            }, index * 60);
+        });
 
         function openLightbox(imgSrc, captionText) {
             document.getElementById('lightboxImg').src = imgSrc;
@@ -273,6 +192,5 @@
             window.location.href = "/";
         }
     </script>
-
 </body>
 </html>
