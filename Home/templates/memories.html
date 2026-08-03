@@ -8,8 +8,7 @@
     <!-- CRITICAL: Google Fonts CDN framework links to enable calligraphy cursive script -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <!-- Replace your old font link at the top of memories.html with this line -->
-    <link href="https://googleapis.com{{ v }}" rel="stylesheet">
+    <link href="https://googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -65,7 +64,6 @@
                 0 0 50px rgba(255, 20, 147, 0.5);
             animation: pulse-glow 2.5s ease-in-out infinite alternate;
         }
-
 
         @keyframes pulse-glow {
             from { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 25px rgba(255,20,147,0.6); }
@@ -196,14 +194,16 @@
     </style>
 </head>
 <body>
+    <!-- STREAMLINED ABSOLUTE STATIC ROUTING -->
     <audio id="bgAudioLoop" loop autoplay>
-        <source src="{% get_static_prefix %}images/song_memories.mp3" type="audio/mpeg">
+        <source src="/static/images/song_memories.mp3" type="audio/mpeg">
     </audio>
+
     <!-- Locked Card Layer (Pinned to the screen viewport center) -->
     <div class="locked-center-wrapper">
         <div class="matte-text-card">
             <div class="glowing-text">
-                Thank you for making my year fruitful.❤️ Thank you for you support, care, love, patience and everything you gave me in this year.❤️
+                Thank you for making my year fruitful.❤️ Thank you for your support, care, love, patience and everything you gave me in this year.❤️
             </div>
             <button class="action-btn" onclick="nextPage()">Our Next Chapter</button>
         </div>
@@ -219,90 +219,44 @@
             <div class="frame-caption" id="lightboxText">Our Story</div>
         </div>
     </div>
+
     <script>
-        const captions = [
-            "The day you made me the happiest person alive... ❤️",
-            "Your beautiful smile lights up my whole world. ✨",
-            "Thank you for staying by my side through everything. 💖",
-            "My favorite place in the world is right next to you. 🌧️",
-            "Every single laugh we share is a memory I treasure. 😂",
-            "Supporting each other through thick and thin this year. 🥂",
-            "Holding your hand makes all my worries disappear. 🌸",
-            "I fall in love with you a little bit more every day. 🌹"
+        // Production Route Bridge
+        const staticBase = "/static/";
+
+        const memoryCollection = [
+            { fileName: "photo1.jpg", caption: "The day you made me the happiest person alive... ❤️" },
+            { fileName: "photo2.jpg", caption: "Your beautiful smile lights up my whole world. ✨" },
+            { fileName: "photo3.jpg", caption: "Thank you for staying by my side through everything. 💖" },
+            { fileName: "photo4.jpg", caption: "My favorite place in the world is right next to you. 🌧️" },
+            { fileName: "photo5.jpg", caption: "Every single laugh we share is a memory I treasure. 😂" },
+            { fileName: "photo6.jpg", caption: "Supporting each other through every challenge. 💪" }
         ];
 
-        const totalPhotos = 50;
-        const gridContainer = document.getElementById('photoGrid');
-        const elementsArray = [];
+        const photoGrid = document.getElementById('photoGrid');
 
-        // 1. Generate structural elements for all 50 uncropped photos
-        for (let i = 1; i <= totalPhotos; i++) {
+        memoryCollection.forEach((item, index) => {
             const card = document.createElement('div');
-            card.classList.add('grid-photo-card');
+            card.className = 'grid-photo-card';
 
-            // Assign organic rotational lean angles (between -6deg and +6deg)
-            const rot = (Math.random() * 12) - 6;
-            card.style.setProperty('--card-rot', rot + 'deg');
+            const randomRotation = (Math.random() * 12 - 6).toFixed(2);
+            card.style.setProperty('--card-rot', `${randomRotation}deg`);
 
-            const img = document.createElement('img');
-            img.src = `{% get_static_prefix %}images/photo (${i}).jpg`;
-            card.appendChild(img);
+            const absoluteSrc = `${staticBase}images/${item.fileName}`;
 
-            const textStr = captions[Math.floor(Math.random() * captions.length)];
-            card.onclick = () => openLightbox(img.src, textStr);
+            card.innerHTML = `<img src="${absoluteSrc}" alt="Memory">`;
+            card.onclick = () => openLightbox(absoluteSrc, item.caption);
 
-            elementsArray.push(card);
-        }
+            photoGrid.appendChild(card);
 
-        // 2. Shuffle array to achieve a completely random pop sequence order
-        elementsArray.sort(() => Math.random() - 0.5);
-
-        // 3. Inject photos dynamically into the masonry column structure layout
-        elementsArray.forEach((photoCard) => {
-            gridContainer.appendChild(photoCard);
+            setTimeout(() => {
+                card.classList.add('popped');
+            }, index * 150);
         });
 
-        // 4. Staggered Pop Transitions Sequencer execution loop
-        let popIndex = 0;
-        function triggerNextPop() {
-            if (popIndex >= elementsArray.length) return;
-            elementsArray[popIndex].classList.add('popped');
-            popIndex++;
-            setTimeout(triggerNextPop, 120);
-        }
-
-        // 5. UNIFIED INITIALIZATION ENGINE: Handles grid layout and audio state persistence
-                // REPLACE ONLY THE WINDOW.ONLOAD BLOCK IN PART 2 OF MEMORIES.HTML
-        window.onload = () => {
-            // 1. Kickstart grid photo pop-ins
-            setTimeout(triggerNextPop, 400);
-
-            const audio = document.getElementById('bgAudioLoop');
-
-            // 2. UNBLOCK HOOK: The second she touches the screen, the song jumps forward instantly
-            document.body.addEventListener('click', function() {
-                const savedTime = localStorage.getItem('musicCurrentTime');
-                const wasPlaying = localStorage.getItem('musicPlayingState');
-
-                if (audio && savedTime && wasPlaying === 'true') {
-                    // Instantly sync the song to the exact saved millisecond
-                    audio.currentTime = parseFloat(savedTime);
-                    audio.play().catch(e => console.log("Audio sync failed:", e));
-                }
-            }, { once: true }); // Runs only on the absolute first touch on this page
-
-            // 3. Keep updating the timestamp in storage as the song plays out
-            setInterval(() => {
-                if (audio && !audio.paused) {
-                    localStorage.setItem('musicCurrentTime', audio.currentTime);
-                }
-            }, 500);
-        };
-
-        // 6. Lightbox Modal open/close controllers
-        function openLightbox(url, text) {
-            document.getElementById('lightboxImg').src = url;
-            document.getElementById('lightboxText').innerText = text;
+        function openLightbox(imgSrc, captionText) {
+            document.getElementById('lightboxImg').src = imgSrc;
+            document.getElementById('lightboxText').textContent = captionText;
             document.getElementById('photoLightbox').classList.add('active');
         }
 
@@ -310,18 +264,9 @@
             document.getElementById('photoLightbox').classList.remove('active');
         }
 
-        // 7. FIXED REDIRECT HEADER BUTTON FUNCTION
         function nextPage() {
-            const audio = document.getElementById('bgAudioLoop');
-            if (audio) {
-                // Save time position right before migrating pages
-                localStorage.setItem('musicCurrentTime', audio.currentTime);
-            }
-            window.location.href = "/do-you-love-me/";
+            window.location.href = "../next/";
         }
     </script>
-</body>
-</html>
-
 </body>
 </html>
