@@ -126,3 +126,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # <-- FIXED: Standardized p
 
 # <-- FIXED: Switched to serverless-friendly storage engine
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Ensure these match exactly
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Home', 'static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
