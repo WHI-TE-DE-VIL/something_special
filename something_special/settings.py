@@ -41,9 +41,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- FIXED: Moved to top right after SecurityMiddleware
+    'django.middleware.security.SecurityMiddleware', # <-- FIXED: Moved to top right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,6 +124,3 @@ STATICFILES_DIRS = [
 
 # Where Django forces production aggregation mapping
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# THE PERFECT VERCEL FIX: Use standard storage so un-hashed assets serve smoothly
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
