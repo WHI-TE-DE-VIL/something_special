@@ -50,7 +50,7 @@
 
         /* Calligraphy font rules matching the landing page */
         .glowing-text {
-            font-family: 'Great Vibes', cursive !important; /* Force homepage script */
+            font-family: 'Great Vibes', cursive !important;
             font-style: normal !important;
             font-weight: 400 !important;
             color: #ffffff;
@@ -193,12 +193,12 @@
     </style>
 </head>
 <body>
-    <!-- SAFE AUDIO EXTRACTION PATH -->
+    <!-- STREAMLINED BACKEND AUDIO ASSIGNMENT -->
     <audio id="bgAudioLoop" loop autoplay>
-        <source src="/static/images/song_memories.mp3" type="audio/mpeg">
+        <source src="{% static 'images/song_memories.mp3' %}" type="audio/mpeg">
     </audio>
 
-    <!-- Locked Card Layer -->
+    <!-- Locked Card Layer (Pinned to the screen viewport center) -->
     <div class="locked-center-wrapper">
         <div class="matte-text-card">
             <div class="glowing-text">
@@ -223,7 +223,6 @@
         // Production Route Bridge
         const staticBase = "/static/";
 
-        // 6 Custom special captions
         const primaryCaptions = [
             "The day you made me the happiest person alive... ❤️",
             "Your beautiful smile lights up my whole world. ✨",
@@ -234,31 +233,30 @@
         ];
 
         const photoGrid = document.getElementById('photoGrid');
-        const totalPhotos = 50; // Forces JavaScript to generate cards for all 50 files
+        const totalPhotos = 50;
 
+        // Clean execution loop layout
         for (let i = 1; i <= totalPhotos; i++) {
             const card = document.createElement('div');
             card.className = 'grid-photo-card';
 
             const randomRotation = (Math.random() * 12 - 6).toFixed(2);
-            card.style.setProperty('--card-rot', `${randomRotation}deg`);
+            card.style.setProperty('--card-rot', randomRotation + 'deg');
 
-            // Clean, numeric filenames without buggy spaces or brackets
-            const filename = `photo${i}.jpg`;
+            // EXACT MATCH FIX: Points directly to photo1.jpg, photo2.jpg...
+            const filename = 'photo' + i + '.jpg';
             const absoluteSrc = staticBase + "images/" + filename;
 
-            // Use the specific caption if it exists, otherwise fall back to a generic sweet message
-            const captionText = primaryCaptions[i - 1] || `Another beautiful moment with you... ✨ (Memory #${i})`;
+            const captionText = primaryCaptions[i - 1] || "Another beautiful moment with you... ✨";
 
-            card.innerHTML = `<img src="${absoluteSrc}" alt="Memory">`;
-            card.onclick = () => openLightbox(absoluteSrc, captionText);
+            card.innerHTML = '<img src="' + absoluteSrc + '" alt="Memory">';
+            card.onclick = function() { openLightbox(absoluteSrc, captionText); };
 
             photoGrid.appendChild(card);
 
-            // Stagger animation entry popping cards sequentially
-            setTimeout(() => {
+            setTimeout(function() {
                 card.classList.add('popped');
-            }, (i - 1) * 100);
+            }, (i - 1) * 60);
         }
 
         function openLightbox(imgSrc, captionText) {
