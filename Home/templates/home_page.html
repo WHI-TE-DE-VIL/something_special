@@ -226,13 +226,7 @@
 
         /* REPLACE THE NEXTPAGE FUNCTION AT THE BOTTOM OF YOUR HOME_PAGE.HTML */
         function nextPage() {
-            const audio = document.getElementById('bgAudioLoop');
-            if (audio) {
-                // Capture the absolute current timestamp
-                localStorage.setItem('musicCurrentTime', audio.currentTime);
-                localStorage.setItem('musicPlayingState', 'true');
-            }
-            window.location.href = "/do-you-love-me/";
+            window.location.href = "/love_query/";
         }
 
     </script>
