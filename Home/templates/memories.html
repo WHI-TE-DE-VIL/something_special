@@ -220,11 +220,11 @@
     </div>
 
     <script>
-        // FORCED VERCEL STATIC PATH TUNNEL
+        // Production Route Bridge
         const staticBase = "/static/";
 
-        // Array mapping with your actual filenames containing spaces and brackets
-        const captions = [
+        // 6 Custom special captions
+        const primaryCaptions = [
             "The day you made me the happiest person alive... ❤️",
             "Your beautiful smile lights up my whole world. ✨",
             "Thank you for staying by my side through everything. 💖",
@@ -234,28 +234,32 @@
         ];
 
         const photoGrid = document.getElementById('photoGrid');
+        const totalPhotos = 50; // Forces JavaScript to generate cards for all 50 files
 
-        captions.forEach((captionText, index) => {
+        for (let i = 1; i <= totalPhotos; i++) {
             const card = document.createElement('div');
             card.className = 'grid-photo-card';
 
             const randomRotation = (Math.random() * 12 - 6).toFixed(2);
             card.style.setProperty('--card-rot', `${randomRotation}deg`);
 
-            // THE EXACT FILENAME TRANSLATOR FOR PARENTHESES: photo (1).jpg, photo (2).jpg...
-            // encodeURIComponent cleanly fixes spaces and brackets so URLs don't break
-            const filename = `photo (${index + 1}).jpg`;
-            const absoluteSrc = staticBase + "images/" + encodeURIComponent(filename);
+            // Clean, numeric filenames without buggy spaces or brackets
+            const filename = `photo${i}.jpg`;
+            const absoluteSrc = staticBase + "images/" + filename;
+
+            // Use the specific caption if it exists, otherwise fall back to a generic sweet message
+            const captionText = primaryCaptions[i - 1] || `Another beautiful moment with you... ✨ (Memory #${i})`;
 
             card.innerHTML = `<img src="${absoluteSrc}" alt="Memory">`;
             card.onclick = () => openLightbox(absoluteSrc, captionText);
 
             photoGrid.appendChild(card);
 
+            // Stagger animation entry popping cards sequentially
             setTimeout(() => {
                 card.classList.add('popped');
-            }, index * 150);
-        });
+            }, (i - 1) * 100);
+        }
 
         function openLightbox(imgSrc, captionText) {
             document.getElementById('lightboxImg').src = imgSrc;
@@ -271,5 +275,6 @@
             window.location.href = "/";
         }
     </script>
+
 </body>
 </html>
