@@ -196,25 +196,24 @@
             if (isSpinning) return;
             isSpinning = true;
 
-            // 1. Pick a truly random target slice index (0 to 5)
-            const targetSectorIndex = Math.floor(Math.random() * 6);
+            // 1. Pick a random winning data index (0 to 5) FIRST
+            const winningDataIndex = Math.floor(Math.random() * 6);
+            const data = destinyDatabase[winningDataIndex];
 
-            // 2. THE MATHEMATICAL ALIGNMENT FIX:
-            // Inverts the calculation to cleanly match clockwise rotation offsets to the top center pointer needle
-            const matchingDataIndex = (6 - targetSectorIndex) % 6;
+            // 2. THE ULTIMATE MATH FIX:
+            // Calculate the exact stopping degree for that data index under the top needle pointer
+            // Slice 0 (Origin) = 0deg, Slice 1 (Glow) = 300deg, Slice 2 (Anchor) = 240deg...
+            const targetStoppingDegree = (6 - winningDataIndex) % 6 * 60;
 
-            // 3. Generate smooth cinematic multiple-rotation force spin angles (minimum 5 full spins)
-            const additionalRotations = 1800 + (360 - (targetSectorIndex * 60));
-            currentRotation += additionalRotations;
+            // 3. Reset the wheel to its clean modulo baseline position first, then add 5 full dramatic spins (1800deg)
+            const cleanBaselineRotation = currentRotation % 360;
+            currentRotation = currentRotation - cleanBaselineRotation + targetStoppingDegree + 1800;
 
-            wheel.style.setProperty('transform', `rotate(${currentRotation}deg)`);
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-            // 4. Wait cleanly for the 4-second cubic-bezier animation to execute
+            // 4. Wait for the 4-second animation transition to complete
             setTimeout(() => {
-                // Read the perfectly synchronized array node metrics
-                const data = destinyDatabase[matchingDataIndex];
-
+                // Populate the popup content with the perfectly pre-selected matching data item
                 document.getElementById('popupChapter').textContent = data.marker;
                 document.getElementById('popupTitle').textContent = data.title;
                 document.getElementById('popupBody').textContent = data.body;
@@ -223,6 +222,7 @@
                 isSpinning = false;
             }, 4000);
         }
+
 
 
         function closeScroll() {
