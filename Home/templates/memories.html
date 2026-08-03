@@ -92,7 +92,7 @@
             box-shadow: 0 8px 20px rgba(255, 102, 178, 0.4);
         }
 
-        /* MASONRY FLOW COLUMN SYSTEM: Prevents all container aspect-ratio gaps and white padding */
+        /* MASONRY FLOW COLUMN SYSTEM */
         .scrappy-column-wrapper {
             column-count: 4;
             column-gap: 25px;
@@ -103,7 +103,6 @@
             z-index: 10;
         }
 
-        /* Dynamic viewport scale media queries */
         @media (max-width: 1100px) { .scrappy-column-wrapper { column-count: 3; } }
         @media (max-width: 768px) {
             .scrappy-column-wrapper { column-count: 2; padding: 15px; column-gap: 15px; }
@@ -119,7 +118,7 @@
             cursor: pointer;
             border-radius: 4px;
             margin-bottom: 25px;
-            break-inside: avoid; /* Prevents images from snapping in half between columns */
+            break-inside: avoid;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
             opacity: 0;
             transform: scale(0) rotate(0deg);
@@ -132,7 +131,7 @@
 
         .grid-photo-card img {
             width: 100%;
-            height: auto; /* Fits the photo shape exactly so white spaces vanish */
+            height: auto;
             display: block;
             border-radius: 2px;
         }
@@ -194,12 +193,12 @@
     </style>
 </head>
 <body>
-    <!-- STREAMLINED ABSOLUTE STATIC ROUTING -->
+    <!-- SAFE AUDIO EXTRACTION PATH -->
     <audio id="bgAudioLoop" loop autoplay>
         <source src="/static/images/song_memories.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Locked Card Layer (Pinned to the screen viewport center) -->
+    <!-- Locked Card Layer -->
     <div class="locked-center-wrapper">
         <div class="matte-text-card">
             <div class="glowing-text">
@@ -221,31 +220,35 @@
     </div>
 
     <script>
-        // Production Route Bridge
+        // FORCED VERCEL STATIC PATH TUNNEL
         const staticBase = "/static/";
 
-        const memoryCollection = [
-            { fileName: "photo1.jpg", caption: "The day you made me the happiest person alive... ❤️" },
-            { fileName: "photo2.jpg", caption: "Your beautiful smile lights up my whole world. ✨" },
-            { fileName: "photo3.jpg", caption: "Thank you for staying by my side through everything. 💖" },
-            { fileName: "photo4.jpg", caption: "My favorite place in the world is right next to you. 🌧️" },
-            { fileName: "photo5.jpg", caption: "Every single laugh we share is a memory I treasure. 😂" },
-            { fileName: "photo6.jpg", caption: "Supporting each other through every challenge. 💪" }
+        // Array mapping with your actual filenames containing spaces and brackets
+        const captions = [
+            "The day you made me the happiest person alive... ❤️",
+            "Your beautiful smile lights up my whole world. ✨",
+            "Thank you for staying by my side through everything. 💖",
+            "My favorite place in the world is right next to you. 🌧️",
+            "Every single laugh we share is a memory I treasure. 😂",
+            "Supporting each other through every challenge. 💪"
         ];
 
         const photoGrid = document.getElementById('photoGrid');
 
-        memoryCollection.forEach((item, index) => {
+        captions.forEach((captionText, index) => {
             const card = document.createElement('div');
             card.className = 'grid-photo-card';
 
             const randomRotation = (Math.random() * 12 - 6).toFixed(2);
             card.style.setProperty('--card-rot', `${randomRotation}deg`);
 
-            const absoluteSrc = `${staticBase}images/${item.fileName}`;
+            // THE EXACT FILENAME TRANSLATOR FOR PARENTHESES: photo (1).jpg, photo (2).jpg...
+            // encodeURIComponent cleanly fixes spaces and brackets so URLs don't break
+            const filename = `photo (${index + 1}).jpg`;
+            const absoluteSrc = staticBase + "images/" + encodeURIComponent(filename);
 
             card.innerHTML = `<img src="${absoluteSrc}" alt="Memory">`;
-            card.onclick = () => openLightbox(absoluteSrc, item.caption);
+            card.onclick = () => openLightbox(absoluteSrc, captionText);
 
             photoGrid.appendChild(card);
 
@@ -265,7 +268,7 @@
         }
 
         function nextPage() {
-            window.location.href = "../next/";
+            window.location.href = "/";
         }
     </script>
 </body>
