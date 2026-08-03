@@ -196,14 +196,24 @@
             if (isSpinning) return;
             isSpinning = true;
 
+            // 1. Pick a truly random target slice index (0 to 5)
             const targetSectorIndex = Math.floor(Math.random() * 6);
+
+            // 2. THE MATHEMATICAL ALIGNMENT FIX:
+            // Inverts the calculation to cleanly match clockwise rotation offsets to the top center pointer needle
+            const matchingDataIndex = (6 - targetSectorIndex) % 6;
+
+            // 3. Generate smooth cinematic multiple-rotation force spin angles (minimum 5 full spins)
             const additionalRotations = 1800 + (360 - (targetSectorIndex * 60));
             currentRotation += additionalRotations;
 
+            wheel.style.setProperty('transform', `rotate(${currentRotation}deg)`);
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
+            // 4. Wait cleanly for the 4-second cubic-bezier animation to execute
             setTimeout(() => {
-                const data = destinyDatabase[targetSectorIndex];
+                // Read the perfectly synchronized array node metrics
+                const data = destinyDatabase[matchingDataIndex];
 
                 document.getElementById('popupChapter').textContent = data.marker;
                 document.getElementById('popupTitle').textContent = data.title;
@@ -213,6 +223,7 @@
                 isSpinning = false;
             }, 4000);
         }
+
 
         function closeScroll() {
             document.getElementById('cosmicLightbox').classList.remove('active');
