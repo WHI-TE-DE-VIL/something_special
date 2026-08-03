@@ -37,7 +37,7 @@ urlpatterns = [
     path('beginning/', include('Home.urls')),
     path('forever-vault/', include('Home.urls')),
     path('memories/', include('Home.urls')),
-    path('ending/', include('Home.urls')),
+    path('ending-page/', include('Home.urls')),
 ]
 
 # THE CRITICAL DEPLOYMENT ROUTE ADDITION

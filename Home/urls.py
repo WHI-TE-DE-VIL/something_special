@@ -7,6 +7,6 @@ urlpatterns = [
     path('beginning/', views.beginning, name='beginning'),
     path('forever-vault/', views.forever_vault, name='final_vault'),
     path('memories/', views.memories, name='memories'),
-    path('ending/', views.ending, name='ending'),
+    path('ending-page/', views.ending_page, name='ending-page'),
 
 ]
