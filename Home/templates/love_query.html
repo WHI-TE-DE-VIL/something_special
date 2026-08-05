@@ -115,15 +115,15 @@
     <canvas id="confettiCanvas"></canvas>
 
     <div class="query-box">
-        <h1>Do you love me now also?</h1>
+        <h1>Do you love me?</h1>
         <div class="btn-container" id="btnContainer">
             <!-- Pushed left slightly via inline layout to offset the absolute No button -->
             <button class="love-btn yes-btn" style="margin-right: 110px;" onclick="celebrateLove()">Yes</button>
-            <button class="love-btn no-btn" id="noButton" onmouseover="teleportButton()" onclick="teleportButton()">No</button>
+            <button class="love-btn no-btn" id="noButton" onmouseover="teleportButton()" onclick="teleportButton()">No, never</button>
         </div>
     </div>
 
-    <!-- The Javascript handling logic attaches below in Part 2... -->
+    <!-- The javascript handling logic attaches below in Part 2... -->
     <script>
         const noBtn = document.getElementById('noButton');
         const container = document.getElementById('btnContainer');
